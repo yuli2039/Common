@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="bgColorf5">#FFF5F5F5</color>
+    <color name="bgColorf8">#FFf8f8f8</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="trans">#00000000</color>
+    <color name="blue1c">#FF1c69a3</color>
+    <color name="blue53">#FF53aed7</color>
+    <color name="blue16">#FF165482</color>
+    <color name="blue69">#FF69b8dc</color>
+    <color name="redf4">#FFf47163</color>
+    <color name="redc3">#FFc35a4f</color>
+    <color name="gray_3">#FF333333</color>
+    <color name="gray_6">#FF666666</color>
+    <color name="gray_9">#FF999999</color>
+    <color name="gray_b">#FFBBBBBB</color>
+    <color name="gray_c">#FFCCCCCC</color>
+    <color name="gray_d">#FFDDDDDD</color>
+    <color name="gray_e2">#FFe2e2e2</color>
+    <color name="gray_9c">#FF9c9c9c</color>
+    <color name="gray_4a">#FF4a4a4a</color>
+    <color name="ibClick">#44DDDDDD</color>
+    <color name="yellowff">#fff391</color>
+    <color name="yellowf4">#f4aa00</color>
+    <color name="yellowc3">#c38800</color>
+    <color name="blue37">#3781e4</color>
+
+    <!-- coustomDia 的按钮文字颜色 -->
+    <color name="blueBtn1">#FF2299dd</color>
+    <color name="blueBtn2">#FF1188DD</color>
+
+</resources>
