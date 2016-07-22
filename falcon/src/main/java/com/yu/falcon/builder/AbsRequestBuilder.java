@@ -73,7 +73,6 @@ public abstract class AbsRequestBuilder<R extends AbsRequestBuilder> {
                 throw new IllegalArgumentException("the url contains \'{\' or \'}\', please set path parameter.");
             }
         }
-        builder.url(url);
     }
 
     /**
@@ -104,6 +103,7 @@ public abstract class AbsRequestBuilder<R extends AbsRequestBuilder> {
     public Request generateRequest(Callback callback) {
         RequestBody requestBody = buildRequestBody();
         RequestBody wrappedRequestBody = wrapRequestBody(requestBody, callback);
+        builder.url(url);
         return buildRequest(wrappedRequestBody);
     }
 

@@ -33,18 +33,18 @@ public class GetBuilder extends AbsRequestBuilder<GetBuilder> implements Paramsa
 
     @Override
     protected RequestBody buildRequestBody() {
+        if (params != null)
+            url = appendParams(url, params);
         return null;
     }
 
     @Override
     protected Request buildRequest(RequestBody requestBody) {
-        if (params != null)
-            url = appendParams(url, params);
         return builder.get().build();
     }
 
     /**
-     * 添加查询参数
+     * 添加查询参数到url
      */
     protected String appendParams(String url, Map<String, String> params) {
         if (url == null || params == null || params.isEmpty()) {
