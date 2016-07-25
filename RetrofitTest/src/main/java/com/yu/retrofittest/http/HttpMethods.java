@@ -29,6 +29,7 @@ public class HttpMethods {
                 .addInterceptor(new LoggerInterceptor("yuu"))
                 .addInterceptor(new HeaderInterceptor())
 //                .addInterceptor(new GzipRequsetInterceptor())
+//                .cache(new Cache(Environment.getExternalStorageDirectory(),1024*1024))
                 .build();
 
         retrofit = new Retrofit.Builder()

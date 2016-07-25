@@ -18,14 +18,15 @@ import rx.subjects.Subject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * @version 1.0
- *          使用RxBus发布网络数据，订阅者通过注册的方式订阅数据
- * @question Q.如果订阅者不同但同时存在于序列并且都被订阅，那么code相同的情况下是否会出现都收到通知的情况
- * A.测试了一下，在订阅者不同但code相同的相框下，并没有出现订阅者都接到通知的情况
- * Created by Android on 2016/6/6.
+ * RxBus
  */
 public class RxBus {
+
     private static RxBus instance;
+    //发布者
+    private final Subject bus;
+    //存放订阅者信息
+    private Map<Object, CompositeSubscription> subscriptions = new HashMap<>();
 
     public static RxBus getInstance() {
         if (instance == null) {
@@ -38,14 +39,6 @@ public class RxBus {
         return instance;
     }
 
-    //TAG默认值
-    public static final int TAG_DEFAULT = 0;
-    //发布者
-    private final Subject bus;
-
-    //存放订阅者信息
-    private Map<Object, CompositeSubscription> subscriptions = new HashMap<>();
-
     /**
      * PublishSubject 创建一个可以在订阅之后把数据传输给订阅者Subject
      * SerializedSubject 序列化Subject为线程安全的Subject
@@ -54,52 +47,24 @@ public class RxBus {
         bus = new SerializedSubject<>(PublishSubject.create());
     }
 
-    public void post(@NonNull Object obj) {
-        post(TAG_DEFAULT, obj);
-    }
-
     /**
      * 发布事件
      */
-    public void post(@NonNull int code, @NonNull Object obj) {
-        bus.onNext(new Msg(code, obj));
-    }
-
-    public Observable<Object> tObservable() {
-        return tObservable(Object.class);
-    }
-
-    public <T> Observable<T> tObservable(Class<T> eventType) {
-        return tObservable(TAG_DEFAULT, eventType);
+    public void post(@NonNull Object obj) {
+        bus.onNext(obj);
     }
 
     /**
      * 订阅事件
-     *
-     * @return
      */
-    public <T> Observable tObservable(final int code, final Class<T> eventType) {
-        return bus.ofType(Msg.class)//判断接收事件类型
-                .filter(new Func1<Msg, Boolean>() {
-                    @Override
-                    public Boolean call(Msg o) {
-                        //过滤code同的事件
-                        return o.code == code;
-                    }
-                })
-                .map(new Func1<Msg, Object>() {
-                    @Override
-                    public Object call(Msg o) {
-                        return o.object;
-                    }
-                })
-                .cast(eventType);
+    public <T> Observable tObservable(final Class<T> eventType) {
+        return bus.ofType(eventType);// ofType = filter + cast
     }
 
     /**
      * 订阅者注册
      *
-     * @param subscriber
+     * @param subscriber 订阅消息的对象
      */
     public void register(@NonNull final Object subscriber) {
         Observable.just(subscriber)
@@ -109,7 +74,7 @@ public class RxBus {
                         return s != null && subscriptions.get(s) == null;
                     }
                 })
-                .map(new Func1<Object, Class>() {
+                .map(new Func1<Object, Class>() {//拿到Class
                     @Override
                     public Class call(Object o) {
                         return o.getClass();
@@ -158,9 +123,10 @@ public class RxBus {
         }
         //获取注解
         Subscribe sub = m.getAnnotation(Subscribe.class);
+
         //订阅事件
-        Subscription subscription = tObservable(sub.tag(), cla)
-                .observeOn(EventThread.getScheduler(sub.thread()))
+        Subscription subscription = tObservable(cla)
+                .observeOn(sub.thread().getScheduler())
                 .subscribe(new Action1() {
                                @Override
                                public void call(Object o) {

@@ -5,7 +5,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Android on 2016/6/8.
+ * rxbus订阅线程
  */
 public enum EventThread {
     /**
@@ -35,9 +35,9 @@ public enum EventThread {
 //    EXECUTOR,
 //    HANDLER;
 
-    public static Scheduler getScheduler(EventThread threadMode) {
+    public Scheduler getScheduler() {
         Scheduler scheduler;
-        switch (threadMode) {
+        switch (this) {
             case MAIN_THREAD:
                 scheduler = AndroidSchedulers.mainThread();
                 break;

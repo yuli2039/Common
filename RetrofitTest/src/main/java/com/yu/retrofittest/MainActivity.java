@@ -101,9 +101,9 @@ public class MainActivity extends RxAppCompatActivity {
     /**
      * test rxbus
      */
-    @Subscribe(tag = RxBus.TAG_DEFAULT)
-    public void receviceStr(String str) {
-        btn.setText(str);
+    @Subscribe
+    public void receviceStr(LoginEn en) {
+        btn.setText(en.event);
     }
 
     /**

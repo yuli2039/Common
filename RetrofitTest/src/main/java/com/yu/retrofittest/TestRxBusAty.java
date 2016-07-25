@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.jakewharton.rxbinding.view.RxView;
 import com.yu.retrofittest.rx.bus.RxBus;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -33,6 +35,7 @@ public class TestRxBusAty extends AppCompatActivity {
         btn = (Button) findViewById(R.id.btn);
 
         RxView.clicks(btn)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .flatMap(new Func1<Void, Observable<String>>() {
                     @Override
                     public Observable<String> call(Void aVoid) {
@@ -51,7 +54,9 @@ public class TestRxBusAty extends AppCompatActivity {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        RxBus.getInstance().post(s);
+                        LoginEn en = new LoginEn();
+                        en.event = s;
+                        RxBus.getInstance().post(en);
                         finish();
                     }
                 });
