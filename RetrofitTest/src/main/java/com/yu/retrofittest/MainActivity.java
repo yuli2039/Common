@@ -1,6 +1,5 @@
 package com.yu.retrofittest;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
@@ -19,20 +17,19 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.yu.retrofittest.http.ApiService;
 import com.yu.retrofittest.http.HttpMethods;
 import com.yu.retrofittest.rx.SchedulersCompat;
+import com.yu.retrofittest.rx.SubscriberWL;
 import com.yu.retrofittest.rx.bus.RxBus;
 import com.yu.retrofittest.rx.bus.Subscribe;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
-import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 public class MainActivity extends RxAppCompatActivity {
 
-    private ProgressDialog dia;
     private EditText et;
     private Button btn;
     private Button btnJump;
@@ -112,14 +109,7 @@ public class MainActivity extends RxAppCompatActivity {
     public void btnSend() {
         ApiService service = HttpMethods.getInstance().createService(ApiService.class);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("grant_type", "password");
-        map.put("phone", "18108187310");
-        map.put("password", et.getText().toString().trim());
-        service.login(map)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .compose(SchedulersCompat.<LoginEn>applyExecutorSchedulers())// 线程切换
+        service.gank(10, 1)
 //                .doOnSubscribe(new Action0() {// 显示loading,方案1
 //                    @Override
 //                    public void call() {
@@ -132,30 +122,19 @@ public class MainActivity extends RxAppCompatActivity {
 //                        dismissLoading();
 //                    }
 //                })
-                .compose(this.<LoginEn>bindUntilEvent(ActivityEvent.DESTROY))// 绑定声明周期，防止内存泄露
-                .subscribe(new Subscriber<LoginEn>() {
+                .retry(new Func2<Integer, Throwable, Boolean>() {// 设置重试次数小于2且是socket错误才重试
                     @Override
-                    public void onStart() {
-                        super.onStart();
-                        showLoading();// 方案2，如果确定是主线程订阅才能在这里显示loading，还可以cancel时同时取消订阅
+                    public Boolean call(Integer integer, Throwable throwable) {
+                        return throwable instanceof SocketTimeoutException && integer < 2;
                     }
-
+                })
+                .compose(this.<GankEn>bindUntilEvent(ActivityEvent.DESTROY))// 绑定声明周期，防止内存泄露
+                .compose(SchedulersCompat.<GankEn>applyExecutorSchedulers())// 线程切换
+                // 方案2，如果确定是主线程订阅才能在这里显示loading，cancel时同时取消订阅
+                .subscribe(new SubscriberWL<GankEn>(MainActivity.this, true) {
                     @Override
-                    public void onCompleted() {
-                        Log.e("tR", "onCompleted");
-                        dismissLoading();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("tR", "onError");
-                        dismissLoading();
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(LoginEn o) {
-                        Log.e("tR", "onNext");
+                    public void onNext(GankEn gn) {
+                        Log.e("tR", gn.getResults().get(0).getDesc());
                     }
                 });
 
@@ -167,14 +146,4 @@ public class MainActivity extends RxAppCompatActivity {
         super.onDestroy();
     }
 
-    private void showLoading() {
-        if (dia == null)
-            dia = new ProgressDialog(this);
-        dia.show();
-    }
-
-    private void dismissLoading() {
-        if (dia != null)
-            dia.dismiss();
-    }
 }
