@@ -31,20 +31,20 @@ public abstract class SubscriberWL<T> extends Subscriber<T> {
 
     @Override
     public void onStart() {
-        Log.e("SubscriberWL","--onStart--");
+        Log.e("SubscriberWL", "--onStart--");
         dialog.show();
     }
 
     @Override
     public void onCompleted() {
-        Log.e("SubscriberWL","--onCompleted--");
+        Log.e("SubscriberWL", "--onCompleted--");
         if (dialog.isShowing())
             dialog.dismiss();
     }
 
     @Override
     public void onError(Throwable e) {
-        Log.e("SubscriberWL","--onError--");
+        Log.e("SubscriberWL", "--onError--" + e.toString());
         if (dialog.isShowing())
             dialog.dismiss();
     }

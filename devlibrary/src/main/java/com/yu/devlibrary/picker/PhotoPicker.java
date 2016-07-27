@@ -57,21 +57,19 @@ public class PhotoPicker {
     public static final int REQUEST_GALLERY = 1213;
 
     private Activity mContext;
-    private CameraRequestBuilder mCameraRequest;
-    private GalleryRequestBuilder mGalleryRequest;
+    public CameraRequest mCameraRequest;// builder在build方法中赋值
+    public GalleryRequest mGalleryRequest;// builder在build方法中赋值
 
     public PhotoPicker(@NonNull Activity context) {
         this.mContext = context;
     }
 
-    public CameraRequestBuilder takePhoto() {
-        mCameraRequest = new CameraRequestBuilder(mContext);
-        return mCameraRequest;
+    public CameraRequest.CameraRequestBuilder takePhoto() {
+        return new CameraRequest.CameraRequestBuilder(mContext, this);
     }
 
-    public GalleryRequestBuilder selectFromGallery() {
-        mGalleryRequest = new GalleryRequestBuilder(mContext);
-        return mGalleryRequest;
+    public GalleryRequest.GalleryRequestBuilder selectFromGallery() {
+        return new GalleryRequest.GalleryRequestBuilder(mContext, this);
     }
 
     public void handleResult(int requestCode, int resultCode, Intent data, ResultHandler handler) {
@@ -91,6 +89,9 @@ public class PhotoPicker {
                     break;
                 case REQUEST_CAMERA:
                     if (mCameraRequest.isNeedCrop()) {
+                        if (mCameraRequest.getParams() == null)
+                            throw new IllegalArgumentException("the CropParams is null");
+
                         Intent intent = buildCropIntent(mCameraRequest.getParams(),
                                 mCameraRequest.getSourceUri());
                         mContext.startActivityForResult(intent, REQUEST_CROP_CAMERA);
@@ -101,6 +102,9 @@ public class PhotoPicker {
                 case REQUEST_GALLERY:
                     String path = getRealPathFromURIKK(mContext, data.getData());
                     if (mGalleryRequest.isNeedCrop()) {
+                        if (mGalleryRequest.getParams() == null)
+                            throw new IllegalArgumentException("the CropParams is null");
+
                         Intent intent2 = buildCropIntent(mGalleryRequest.getParams(),
                                 Uri.fromFile(new File(path)));
                         mContext.startActivityForResult(intent2, REQUEST_CROP_GALLERY);

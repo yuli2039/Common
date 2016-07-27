@@ -134,7 +134,8 @@ public class MainActivity extends RxAppCompatActivity {
                 .subscribe(new SubscriberWL<GankEn>(MainActivity.this, true) {
                     @Override
                     public void onNext(GankEn gn) {
-                        Log.e("tR", gn.getResults().get(0).getDesc());
+                        if (gn.getResults() != null && !gn.getResults().isEmpty())
+                            Log.e("onNext", gn.getResults().get(0).getDesc());
                     }
                 });
 

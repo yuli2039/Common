@@ -11,27 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@android:color/transparent"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:src="@mipmap/sky" />
 
-    <ScrollView
-        android:id="@+id/sv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="800dp">
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv"
+        android:onClick="btnCamera"
+        android:text="camera" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="800dp"
-                android:layout_marginTop="200dp"
-                android:background="@android:color/holo_green_dark"
-                android:gravity="center"
-                android:text="content" />
-        </FrameLayout>
-    </ScrollView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn1"
+        android:onClick="btnGallery"
+        android:text="gallery" />
 
 
 </RelativeLayout>
