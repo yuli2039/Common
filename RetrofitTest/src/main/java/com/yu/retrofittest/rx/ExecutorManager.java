@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 维护一个线程池，用于rxjava调用，避免反复创建线程
+ * 维护一个线程池，用于rxjava调用，避免反复创建线程<p/>
+ * Schedulers.from(ExecutorManager.eventExecutor)
  */
 public class ExecutorManager {
 
