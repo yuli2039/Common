@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.yu.retrofittest.entity.LoginEn;
 import com.yu.retrofittest.rx.bus.RxBus;
 
 import java.util.concurrent.TimeUnit;
@@ -54,8 +55,7 @@ public class TestRxBusAty extends AppCompatActivity {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        LoginEn en = new LoginEn();
-                        en.event = s;
+                        LoginEn en = new LoginEn(s);
                         RxBus.getInstance().post(en);
                         finish();
                     }

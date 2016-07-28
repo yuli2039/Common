@@ -1,4 +1,4 @@
-package com.yu.retrofittest;
+package com.yu.retrofittest.entity;
 
 import java.util.List;
 

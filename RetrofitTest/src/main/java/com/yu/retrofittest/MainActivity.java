@@ -14,6 +14,8 @@ import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.yu.retrofittest.entity.GankEn;
+import com.yu.retrofittest.entity.LoginEn;
 import com.yu.retrofittest.http.ApiService;
 import com.yu.retrofittest.http.HttpMethods;
 import com.yu.retrofittest.rx.SchedulersCompat;
@@ -107,6 +109,7 @@ public class MainActivity extends RxAppCompatActivity {
      * test rx + retrofit
      */
     public void btnSend() {
+
         ApiService service = HttpMethods.getInstance().createService(ApiService.class);
 
         service.gank(10, 1)

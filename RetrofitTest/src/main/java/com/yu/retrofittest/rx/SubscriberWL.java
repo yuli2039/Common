@@ -1,6 +1,7 @@
 package com.yu.retrofittest.rx;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
@@ -18,7 +19,7 @@ public abstract class SubscriberWL<T> extends Subscriber<T> {
     Dialog dialog;
 
     public SubscriberWL(Context context, boolean cancelable) {
-        dialog = new Dialog(context);// init dialog
+        dialog = new ProgressDialog(context);// init dialog
         if (cancelable)// 取消订阅
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
