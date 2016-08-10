@@ -14,7 +14,7 @@ public final class SPUtils {
     public static final String SHARED_NAME = "config";
 
     public static <T> void put(String key, T value) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
         if (value == null) {
@@ -39,38 +39,38 @@ public final class SPUtils {
     }
 
     public static String get(String key, String defaultValue) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         return sp.getString(key, defaultValue);
     }
 
     public static boolean get(String key, boolean defaultValue) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         return sp.getBoolean(key, defaultValue);
     }
 
     public static float get(String key, float defaultValue) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         return sp.getFloat(key, defaultValue);
     }
 
     public static int get(String key, int defaultValue) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         return sp.getInt(key, defaultValue);
     }
 
     public static long get(String key, long defaultValue) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         return sp.getLong(key, defaultValue);
     }
 
     public static void remove(String key) {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit().remove(key);
         SharedPreferencesCompat.apply(editor);
     }
 
     public static void clear() {
-        SharedPreferences sp = AppTracker.sContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = AppManager.appContext().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit().clear();
         SharedPreferencesCompat.apply(editor);
     }

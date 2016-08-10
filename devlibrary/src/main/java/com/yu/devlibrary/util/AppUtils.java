@@ -60,7 +60,7 @@ public final class AppUtils {
      * 重启应用
      */
     public static void restartApplication() {
-        Activity context = ActivityStack.getCurrentActicity();
+        Activity context = AppManager.getCurrentActicity();
         Intent intent = context.getPackageManager()
                 .getLaunchIntentForPackage(context.getPackageName())
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -74,10 +74,10 @@ public final class AppUtils {
      */
     public static int versionCode() {
         int result = 0;
-        String packageName = AppTracker.sContext.getPackageName();
+        String packageName = AppManager.appContext().getPackageName();
         PackageInfo packageInfo;
         try {
-            packageInfo = AppTracker.sContext.getPackageManager().getPackageInfo(packageName, 0);
+            packageInfo = AppManager.appContext().getPackageManager().getPackageInfo(packageName, 0);
             result = packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             throw new AssertionError(e);
@@ -92,10 +92,10 @@ public final class AppUtils {
      */
     public static String versionName() {
         String result = null;
-        String packageName = AppTracker.sContext.getPackageName();
+        String packageName = AppManager.appContext().getPackageName();
         PackageInfo packageInfo;
         try {
-            packageInfo = AppTracker.sContext.getPackageManager().getPackageInfo(packageName, 0);
+            packageInfo = AppManager.appContext().getPackageManager().getPackageInfo(packageName, 0);
             result = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             throw new AssertionError(e);
@@ -110,10 +110,10 @@ public final class AppUtils {
      */
     public static String appName() {
         String result = null;
-        String packageName = AppTracker.sContext.getPackageName();
+        String packageName = AppManager.appContext().getPackageName();
         ApplicationInfo applicationInfo;
         try {
-            PackageManager packageManager = AppTracker.sContext.getPackageManager();
+            PackageManager packageManager = AppManager.appContext().getPackageManager();
             applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             result = packageManager.getApplicationLabel(applicationInfo).toString();
         } catch (PackageManager.NameNotFoundException e) {
@@ -145,9 +145,9 @@ public final class AppUtils {
      */
     public static boolean isRunning(String packageName) {
         if (packageName == null) {
-            packageName = AppTracker.sContext.getPackageName();
+            packageName = AppManager.appContext().getPackageName();
         }
-        ActivityManager am = (ActivityManager) AppTracker.sContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) AppManager.appContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> infos = am.getRunningAppProcesses();
         for (ActivityManager.RunningAppProcessInfo rapi : infos) {
             if (rapi.processName.equals(packageName))
@@ -163,7 +163,7 @@ public final class AppUtils {
      * @return 在前台则返回true, 否则返回false
      */
     public static boolean isTopActivy(String activityName) {
-        ActivityManager manager = (ActivityManager) AppTracker.sContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) AppManager.appContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
         String cmpNameTemp = null;
 

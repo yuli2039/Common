@@ -20,9 +20,9 @@ public final class CacheUtils {
     public static String get(String key, long expireTime) {
         String result = null;
 
-        File cacheDir = AppTracker.sContext.getCacheDir();
+        File cacheDir = AppManager.appContext().getCacheDir();
         if (StorageUtils.Sdcard.ready()) {
-            cacheDir = AppTracker.sContext.getExternalCacheDir();
+            cacheDir = AppManager.appContext().getExternalCacheDir();
         }
 
         File file = new File(cacheDir, AppUtils.toMd5(key));
@@ -57,9 +57,9 @@ public final class CacheUtils {
      * @param data
      */
     public static void put(String key, String data) {
-        File cacheDir = AppTracker.sContext.getCacheDir();
+        File cacheDir = AppManager.appContext().getCacheDir();
         if (StorageUtils.Sdcard.ready()) {
-            cacheDir = AppTracker.sContext.getExternalCacheDir();
+            cacheDir = AppManager.appContext().getExternalCacheDir();
         }
         if (!cacheDir.exists()) {
             cacheDir.mkdirs();

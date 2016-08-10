@@ -2,7 +2,7 @@ package com.yu.common;
 
 import android.app.Application;
 
-import com.yu.devlibrary.util.AppTracker;
+import com.yu.devlibrary.util.AppManager;
 
 /**
  * @author yu
@@ -13,7 +13,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppTracker.getInstance().init(this);
+        AppManager.getInstance().init(this);
     }
 
 }

@@ -23,7 +23,7 @@ public final class NetUtils {
      * @return 是否网络在线
      */
     public static boolean isOnline() {
-        ConnectivityManager manager = (ConnectivityManager) AppTracker.sContext
+        ConnectivityManager manager = (ConnectivityManager) AppManager.appContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isAvailable();
@@ -33,7 +33,7 @@ public final class NetUtils {
      * @return 当期的网络类型
      */
     public static NetworkType type() {
-        ConnectivityManager manager = (ConnectivityManager) AppTracker.sContext
+        ConnectivityManager manager = (ConnectivityManager) AppManager.appContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = manager.getActiveNetworkInfo();
 

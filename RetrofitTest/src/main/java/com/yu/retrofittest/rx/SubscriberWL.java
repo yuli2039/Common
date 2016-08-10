@@ -24,8 +24,8 @@ public abstract class SubscriberWL<T> extends Subscriber<T> {
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    if (!SubscriberWL.this.isUnsubscribed())
-                        SubscriberWL.this.unsubscribe();
+                    if (!isUnsubscribed())
+                        unsubscribe();
                 }
             });
     }
