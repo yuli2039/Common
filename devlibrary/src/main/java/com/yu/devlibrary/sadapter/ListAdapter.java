@@ -52,9 +52,9 @@ public abstract class ListAdapter<D> extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return mMultiItemSupport == null ?
-                super.getItemViewType(position) :
-                mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
+        return (mMultiItemSupport == null || mDataSet.isEmpty())
+                ? super.getItemViewType(position)
+                : mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
     }
 
     /**
@@ -189,8 +189,8 @@ public abstract class ListAdapter<D> extends BaseAdapter {
      * 绑定数据到Item View上
      *
      * @param holder
-     * @param position   数据的位置
-     * @param item       数据项
+     * @param position 数据的位置
+     * @param item     数据项
      */
     protected abstract void onBindData(ListViewHolder holder, int position, D item);
 

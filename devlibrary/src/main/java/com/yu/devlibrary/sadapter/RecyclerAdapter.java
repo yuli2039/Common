@@ -193,9 +193,9 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemViewType(int position) {
-        return mMultiItemSupport == null ?
-                super.getItemViewType(position) :
-                mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
+        return (mMultiItemSupport == null || mDataSet.isEmpty())
+                ? super.getItemViewType(position)
+                : mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
     }
 
     /**
@@ -213,8 +213,8 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
      * 绑定数据到Item View上
      *
      * @param holder
-     * @param position   数据的位置
-     * @param item       数据项
+     * @param position 数据的位置
+     * @param item     数据项
      */
     protected abstract void onBindData(RecyclerViewHolder holder, int position, D item);
 
