@@ -1,1 +1,1 @@
-include ':PicMultiSelect', ':YuanCommon', ':RetrofitTest', ':devlibrary', ':falcon'
+include ':PicMultiSelect', ':YuanCommon', ':RetrofitTest', ':devlibrary', ':falcon', ':jcvideo'

@@ -284,9 +284,9 @@ public class XRecyclerView extends RecyclerView {
         @Override
         public int getItemViewType(int position) {
             int adjPosition = position - mHeaderViews.size();
-            if (isReservedItemViewType(adapter.getItemViewType(adjPosition))) {
-                throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 ");
-            }
+//            if (isReservedItemViewType(adapter.getItemViewType(adjPosition))) {
+//                throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 ");
+//            }
 
             if (isHeader(position)) {
                 return sHeaderTypes.get(position);
