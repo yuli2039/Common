@@ -3,8 +3,10 @@ package com.yu.devlibrary.util;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -115,22 +117,54 @@ public class AppManager {
         return appStatus == STATUS_FORCE_KILLED;
     }
 
-    // **********************************************
+
+    /**
+     * 跳转目标activity
+     */
+    public static void jump(Class<? extends Activity> clazz) {
+        ActivityStack.getCurrentActicity().startActivity(
+                new Intent(ActivityStack.getCurrentActicity(), clazz)
+        );
+    }
+
+    /**
+     * 跳转目标activity，带参数
+     */
+    public static void jump(Class<? extends Activity> clazz, String key, Serializable value) {
+        ActivityStack.getCurrentActicity().startActivity(
+                new Intent(ActivityStack.getCurrentActicity(), clazz)
+                        .putExtra(key, value)
+        );
+    }
+
+    /**
+     * 获取当前栈顶的activity
+     */
     public static Activity getCurrentActicity() {
         return ActivityStack.getCurrentActicity();
     }
 
+    /**
+     * 当前栈中是否存在目标activity
+     */
     public static boolean isExists(Class<? extends Activity> clazz) {
         return ActivityStack.isExists(clazz);
     }
 
+    /**
+     * 关闭除了参数的activity之外所有
+     */
     public static void finishExcept(Class<? extends Activity> clazz) {
         ActivityStack.finishExcept(clazz);
     }
 
+    /**
+     * 退出应用
+     */
     public static void exitApp() {
         ActivityStack.exitApp();
     }
+
 
     /**
      * 模拟activity栈，对activity进行管理

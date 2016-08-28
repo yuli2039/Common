@@ -1,4 +1,4 @@
-package com.y.pathtest;
+package com.yu.common.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -14,17 +14,17 @@ import android.view.View;
  * @author yu
  *         Create on 16/8/19.
  */
-public class CusView extends View {
+public class RatioBoardView extends View {
 
     private Paint mPaint;
     private Paint mPaint2;
     private float mAnimatorValue;
 
-    public CusView(Context context) {
+    public RatioBoardView(Context context) {
         super(context);
     }
 
-    public CusView(Context context, AttributeSet attrs) {
+    public RatioBoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
@@ -48,7 +48,7 @@ public class CusView extends View {
         valueAnimator.start();
     }
 
-    public CusView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RatioBoardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

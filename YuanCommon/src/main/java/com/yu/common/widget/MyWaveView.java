@@ -1,5 +1,6 @@
-package com.y.pathtest;
+package com.yu.common.widget;
 
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,13 +16,14 @@ import android.view.animation.LinearInterpolator;
 /**
  * 波浪view
  */
-public class MyWave extends View {
+public class MyWaveView extends View {
 
     private Paint mFrontWavePaint;
     private Paint mBackWavePaint;
     private Path mFrontWavePath;
     private Path mBackWavePath;
     private Path mClipPath;
+    private boolean flag = false;
 
     private int mWidth;
     private int mHeight;
@@ -35,15 +37,15 @@ public class MyWave extends View {
     private float wavelengthRatio = 1.0f;// 波长和view宽度的比例，可以调整波长大小
     private float ratio = 0.0f;// 波浪占整个view的高度比例0~1
 
-    public MyWave(Context context) {
+    public MyWaveView(Context context) {
         super(context);
     }
 
-    public MyWave(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MyWaveView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public MyWave(Context context, AttributeSet attrs) {
+    public MyWaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mClipPath = new Path();
         mFrontWavePath = new Path();
@@ -75,7 +77,8 @@ public class MyWave extends View {
         mFrontWavePaint.setShader(mShader);
         mBackWavePaint.setShader(mShader);
 
-        startAnim();
+        if (!flag)
+            startAnim();
     }
 
     /**
@@ -162,6 +165,8 @@ public class MyWave extends View {
      * 控制两个波浪移动
      */
     private void startAnim() {
+        flag = true;
+
         //  两个波移动的速度不一样
         ValueAnimator animator = ValueAnimator.ofInt(0, mWaveLength);
         animator.setDuration(2000);
@@ -174,7 +179,6 @@ public class MyWave extends View {
                 //   postInvalidate();
             }
         });
-        animator.start();
 
         ValueAnimator animator2 = ValueAnimator.ofInt(0, mWaveLength);
         animator2.setDuration(1500);
@@ -187,7 +191,10 @@ public class MyWave extends View {
                 postInvalidate();
             }
         });
-        animator2.start();
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animator, animator2);
+        set.start();
     }
 
     public float getRatio() {
