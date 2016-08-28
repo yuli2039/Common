@@ -1,68 +1,56 @@
 package com.yu.common.activity;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.view.View;
-import android.widget.ImageView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.yu.common.R;
 import com.yu.common.base.SimpleActivity;
-import com.yu.devlibrary.picker.PhotoPicker;
-import com.yu.devlibrary.picker.PickUtils;
-import com.yu.devlibrary.picker.ResultHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends SimpleActivity {
 
-    private PhotoPicker picker;
-    private ImageView iv;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.test_activity_main;
     }
 
     @Override
     protected void initViewAndEvent() {
         super.initViewAndEvent();
+        ViewPager vp = (ViewPager) findViewById(R.id.vp);
 
-        iv = (ImageView) findViewById(R.id.iv);
-        picker = new PhotoPicker(this);
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new MyFragment());
+        fragments.add(new MyFragment());
+        fragments.add(new MyFragment());
+        fragments.add(new MyFragment());
+        fragments.add(new MyFragment());
+
+        vp.setAdapter(new MyAdapter(getSupportFragmentManager(), fragments));
     }
 
-    public void btnCamera(View view) {
-        picker.takePhoto()
-//                .directory(Environment.getExternalStorageDirectory())
-//                .fileName("hh.jpg")
-//                .needCrop(true)
-//                .cropParams(new CropParams(this))
-                .build()
-                .execute();
-    }
+    private static class MyAdapter extends FragmentPagerAdapter {
+        List<Fragment> fmts;
 
-    public void btnGallery(View view) {
-        picker.selectFromGallery()
-//                .needCrop(true)
-//                .cropParams(new CropParams(this))
-                .build()
-                .execute();
-    }
+        public MyAdapter(FragmentManager fm, List<Fragment> fmts) {
+            super(fm);
+            this.fmts = fmts;
+        }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        picker.handleResult(requestCode, resultCode, data, new ResultHandler() {
-            @Override
-            public void onPhotoSelected(Uri uri) {
-                Bitmap bitmap = PickUtils.decodeUriAsBitmap(MainActivity.this, uri);
-                iv.setImageBitmap(bitmap);
-            }
+        @Override
+        public Fragment getItem(int position) {
+            return fmts.get(position);
+        }
 
-            @Override
-            public void onSelectFail(String msg) {
-
-            }
-        });
+        @Override
+        public int getCount() {
+            return fmts.size();
+        }
     }
 }

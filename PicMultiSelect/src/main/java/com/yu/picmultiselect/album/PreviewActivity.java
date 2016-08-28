@@ -17,9 +17,10 @@ import com.bumptech.glide.Glide;
 import com.yu.picmultiselect.R;
 import com.yu.picmultiselect.widget.photoview.PhotoView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * 看大图页面

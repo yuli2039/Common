@@ -1,4 +1,4 @@
-package com.yu.devlibrary.xrecycler;
+package com.yu.devlibrary.xlist;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 修改自XRecyclerView
  * 可以当成普通的recyclerview来用；
  * 可以添加多个header和footer；
- * 如果设置了LoadMoreListener，自动添加loadMoreFooter，将会覆盖其他的footer；
+ * 如果设置了LoadMoreListener，将会自动添加loadMoreFooter，覆盖其他的footer；
+ *
+ * @author yu
  */
 public class XRecyclerView extends RecyclerView {
 
@@ -37,7 +40,6 @@ public class XRecyclerView extends RecyclerView {
     private List<View> mFooterViews = new ArrayList<>();
     private WrapAdapter mWrapAdapter;
     private LoadMoreListener mLoadmoreListener;
-
 
     public XRecyclerView(Context context) {
         this(context, null);
@@ -99,16 +101,16 @@ public class XRecyclerView extends RecyclerView {
 
     public void loadMoreComplete() {
         isLoadingData = false;
-        if (!mFooterViews.isEmpty() && mFooterViews.get(0) instanceof LoadingMoreFooter)
-            ((LoadingMoreFooter) mFooterViews.get(0)).setState(LoadingMoreFooter.STATE_COMPLETE);
+        if (!mFooterViews.isEmpty() && mFooterViews.get(0) instanceof LoadMoreFooter)
+            ((LoadMoreFooter) mFooterViews.get(0)).setState(LoadMoreFooter.STATE_COMPLETE);
     }
 
     public void setNoMore(boolean noMore) {
         isLoadingData = false;
         isNoMore = noMore;
-        if (!mFooterViews.isEmpty() && mFooterViews.get(0) instanceof LoadingMoreFooter)
-            ((LoadingMoreFooter) mFooterViews.get(0))
-                    .setState(isNoMore ? LoadingMoreFooter.STATE_NOMORE : LoadingMoreFooter.STATE_COMPLETE);
+        if (!mFooterViews.isEmpty() && mFooterViews.get(0) instanceof LoadMoreFooter)
+            ((LoadMoreFooter) mFooterViews.get(0))
+                    .setState(isNoMore ? LoadMoreFooter.STATE_NOMORE : LoadMoreFooter.STATE_COMPLETE);
     }
 
     /**
@@ -121,7 +123,10 @@ public class XRecyclerView extends RecyclerView {
         mFooterViews.clear();
         if (enabled) {
             sFooterTypes.add(FOOTER_INIT_INDEX + mFooterViews.size());
-            mFooterViews.add(new LoadingMoreFooter(mContext));
+            LoadMoreFooter footer = new LoadMoreFooter(mContext);
+            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
+            footer.setLayoutParams(layoutParams);
+            mFooterViews.add(footer);
         }
     }
 
@@ -162,7 +167,7 @@ public class XRecyclerView extends RecyclerView {
                     && layoutManager.getItemCount() > layoutManager.getChildCount()
                     && !isNoMore) {
                 isLoadingData = true;
-                ((LoadingMoreFooter) mFooterViews.get(0)).setState(LoadingMoreFooter.STATE_LOADING);
+                ((LoadMoreFooter) mFooterViews.get(0)).setState(LoadMoreFooter.STATE_LOADING);
                 mLoadmoreListener.onLoadMore();
             }
         }
@@ -284,9 +289,6 @@ public class XRecyclerView extends RecyclerView {
         @Override
         public int getItemViewType(int position) {
             int adjPosition = position - mHeaderViews.size();
-//            if (isReservedItemViewType(adapter.getItemViewType(adjPosition))) {
-//                throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 ");
-//            }
 
             if (isHeader(position)) {
                 return sHeaderTypes.get(position);
@@ -295,11 +297,16 @@ public class XRecyclerView extends RecyclerView {
                 return sFooterTypes.get(adjPosition - adapter.getItemCount());
             }
 
-            int adapterCount;
             if (adapter != null) {
-                adapterCount = adapter.getItemCount();
+                int adapterCount = adapter.getItemCount();
+
                 if (adjPosition < adapterCount) {
-                    return adapter.getItemViewType(adjPosition);
+                    int itemViewType = adapter.getItemViewType(adjPosition);
+
+                    if (isReservedItemViewType(itemViewType)) {
+                        throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 ");
+                    }
+                    return itemViewType;
                 }
             }
             return 0;

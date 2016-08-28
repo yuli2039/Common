@@ -18,9 +18,10 @@ import com.yu.picmultiselect.R;
 import com.yu.picmultiselect.listadapter.BaseAdapterHelper;
 import com.yu.picmultiselect.listadapter.QuickAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
 
 
 /**

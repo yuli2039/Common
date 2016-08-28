@@ -69,7 +69,7 @@ public class BrowserLayout extends LinearLayout {
         mContext = context;
         setOrientation(VERTICAL);
 
-        mProgressBar = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.progress_horizontal, null);
+        mProgressBar = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.browser_progress_horizontal, null);
         mProgressBar.setMax(100);
         mProgressBar.setProgress(0);
         addView(mProgressBar, LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mBarHeight, getResources().getDisplayMetrics()));

@@ -1,4 +1,20 @@
-package com.yu.common.widget;
+package com.yu.devlibrary.xlist;
+
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,9 +32,9 @@ import android.view.View;
  * 2. 支持自定义Drawable类型
  * 3. 支持水平和垂直方向
  * 4. 修复了官方垂直Divider显示的bug
- * 扩展自官方android sdk下的Support7Demos下的DividerItemDecoration
+ * 扩展自官方android sdk下的Support7 Demos下的DividerItemDecoration
  */
-public class DividerItemDecoration extends RecyclerView.ItemDecoration {
+public class ListItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
@@ -34,7 +50,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
 
-    public DividerItemDecoration(Context context, int orientation) {
+    public ListItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
@@ -46,10 +62,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
      *
      * @param context
      * @param orientation
-     * @param dividerDrawable
+     * @param dividerDrawableId
      */
-    public DividerItemDecoration(Context context, int orientation, Drawable dividerDrawable) {
-        mDivider = dividerDrawable;
+    public ListItemDecoration(Context context, int orientation, int dividerDrawableId) {
+        mDivider = context.getResources().getDrawable(dividerDrawableId);;
         setOrientation(orientation);
     }
 
@@ -62,6 +78,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 新增：支持手动为无高宽的drawable制定宽度
+     *
      * @param width
      */
     public void setWidth(int width) {
@@ -70,6 +87,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 新增：支持手动为无高宽的drawable制定高度
+     *
      * @param height
      */
     public void setHeight(int height) {

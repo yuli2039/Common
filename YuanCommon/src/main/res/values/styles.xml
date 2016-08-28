@@ -38,7 +38,7 @@
     
     <!-- loadingProgressBar -->
     <style name="loadingProgressBar" parent="@android:style/Widget.ProgressBar.Small">
-        <item name="android:indeterminateDrawable">@anim/loading_dialog</item>
+        <item name="android:indeterminateDrawable">@drawable/default_loading</item>
         <item name="android:layout_width">25dip</item>
         <item name="android:layout_height">25dip</item>
         <item name="android:layout_gravity">center</item>
