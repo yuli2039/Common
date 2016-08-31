@@ -40,7 +40,8 @@ public class HttpMethods {
                 .addInterceptor(logger)
                 .addInterceptor(new HeaderInterceptor())
 //                .addInterceptor(new GzipRequsetInterceptor())
-//                .cache(new Cache(Environment.getExternalStorageDirectory(),1024*1024))
+//                .addInterceptor(new CacheInterceptor())// cache拦截器必须配合cache目录才生效
+//                .cache(new Cache(Environment.getExternalStorageDirectory(), 10 * 1024 * 1024))
                 .build();
 
         retrofit = new Retrofit.Builder()
