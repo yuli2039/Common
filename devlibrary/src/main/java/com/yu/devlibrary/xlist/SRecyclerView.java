@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author yu
  */
-public class XRecyclerView extends RecyclerView {
+public class SRecyclerView extends RecyclerView {
 
     //下面的ItemViewType是保留值(ReservedItemViewType),如果用户的adapter与它们重复将会强制抛出异常。不过为了简化,我们检测到重复时对用户的提示是ItemViewType必须小于10000
     private static final int HEADER_INIT_INDEX = 10002;
@@ -41,15 +41,15 @@ public class XRecyclerView extends RecyclerView {
     private WrapAdapter mWrapAdapter;
     private LoadMoreListener mLoadmoreListener;
 
-    public XRecyclerView(Context context) {
+    public SRecyclerView(Context context) {
         this(context, null);
     }
 
-    public XRecyclerView(Context context, AttributeSet attrs) {
+    public SRecyclerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public XRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public SRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.mContext = context;
     }
@@ -191,10 +191,10 @@ public class XRecyclerView extends RecyclerView {
 
                 if (adapter.getItemCount() == emptyCount) {
                     mEmptyView.setVisibility(View.VISIBLE);
-                    XRecyclerView.this.setVisibility(View.GONE);
+                    SRecyclerView.this.setVisibility(View.GONE);
                 } else {
                     mEmptyView.setVisibility(View.GONE);
-                    XRecyclerView.this.setVisibility(View.VISIBLE);
+                    SRecyclerView.this.setVisibility(View.VISIBLE);
                 }
             }
             if (mWrapAdapter != null) {

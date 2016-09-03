@@ -122,19 +122,16 @@ public class AppManager {
      * 跳转目标activity
      */
     public static void jump(Class<? extends Activity> clazz) {
-        ActivityStack.getCurrentActicity().startActivity(
-                new Intent(ActivityStack.getCurrentActicity(), clazz)
-        );
+        Activity context = ActivityStack.getCurrentActicity();
+        context.startActivity(new Intent(context, clazz));
     }
 
     /**
      * 跳转目标activity，带参数
      */
     public static void jump(Class<? extends Activity> clazz, String key, Serializable value) {
-        ActivityStack.getCurrentActicity().startActivity(
-                new Intent(ActivityStack.getCurrentActicity(), clazz)
-                        .putExtra(key, value)
-        );
+        Activity context = ActivityStack.getCurrentActicity();
+        context.startActivity(new Intent(context, clazz).putExtra(key, value));
     }
 
     /**

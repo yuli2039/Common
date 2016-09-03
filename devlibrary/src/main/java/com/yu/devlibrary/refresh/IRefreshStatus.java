@@ -1,7 +1,7 @@
 package com.yu.devlibrary.refresh;
 
 /**
- * {@link XRefreshLayout#mRefreshView} all the custom drop-down refresh view need to
+ * {@link SRefreshLayout#mRefreshView} all the custom drop-down refresh view need to
  * implements the interface
  */
 public interface IRefreshStatus {

@@ -13,22 +13,22 @@ import android.widget.ListView;
  * @author yu
  *         Create on 16/8/28.
  */
-public class XListView extends ListView implements AbsListView.OnScrollListener {
+public class SListView extends ListView implements AbsListView.OnScrollListener {
 
     private LoadMoreListener listener;
     private boolean loadMoreEnable = false;// 默认不开启加载更多
     private LoadMoreFooter loadMoreFooter;
     private boolean isNoMore = false;
 
-    public XListView(Context context) {
+    public SListView(Context context) {
         super(context);
     }
 
-    public XListView(Context context, AttributeSet attrs) {
+    public SListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public XListView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

@@ -13,28 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用于RecyclerView的Adapter
+ * RecyclerView的通用Adapter
  *
  * @author yu
  */
 public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerViewHolder> {
-    /**
-     * 数据集
-     */
-    protected final List<D> mDataSet = new ArrayList<>();
-    /**
-     * 单击事件
-     */
-    protected OnItemClickListener mOnItemClickListener;
-    /**
-     * Item Layout的资源id
-     */
-    private int mItemLayoutId;
 
+    protected final List<D> mDataSet = new ArrayList<>();
+
+    private int mItemLayoutId;
     private RecyclerMultiItemTypeSupport<D> mMultiItemSupport;
-    /**
-     * 长按事件
-     */
+    private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
     /**
@@ -55,9 +44,6 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
         addItems(datas);
     }
 
-    /**
-     * 获取数据集
-     */
     public List<D> getDataSet() {
         return mDataSet;
     }
@@ -157,12 +143,6 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
         notifyDataSetChanged();
     }
 
-    /**
-     * 获取指定位置的数据项
-     *
-     * @param position
-     * @return
-     */
     public D getItem(int position) {
         return mDataSet.get(position);
     }
@@ -198,12 +178,6 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
                 : mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
     }
 
-    /**
-     * 根据Type返回布局资源
-     *
-     * @param type
-     * @return
-     */
     public int getItemLayout(int type) {
         return mMultiItemSupport == null ? mItemLayoutId : mMultiItemSupport.getItemLayout(type);
     }
@@ -212,33 +186,24 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
     /**
      * 绑定数据到Item View上
      *
-     * @param holder
+     * @param holder viewholder
      * @param position 数据的位置
      * @param item     数据项
      */
     protected abstract void onBindData(RecyclerViewHolder holder, int position, D item);
 
-
-    /**
-     * @param viewHolder
-     * @param position
-     */
     protected void setupItemClickListener(final RecyclerViewHolder viewHolder, final int position) {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
                     int pos = viewHolder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(pos);
+                    mOnItemClickListener.onItemClick(pos, mDataSet.get(pos));
                 }
             }
         });
     }
 
-    /**
-     * @param viewHolder
-     * @param position
-     */
     protected void setupItemLongClickListener(final RecyclerViewHolder viewHolder, final int position) {
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
 
@@ -246,43 +211,27 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
             public boolean onLongClick(View view) {
                 if (mOnItemLongClickListener != null) {
                     int pos = viewHolder.getLayoutPosition();
-                    mOnItemLongClickListener.onItemLongClick(pos);
+                    mOnItemLongClickListener.onItemLongClick(pos, mDataSet.get(pos));
                 }
                 return false;
             }
         });
     }
 
-    /**
-     * 设置点击事件
-     *
-     * @param listener
-     */
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
 
-    /**
-     * 设置点击事件
-     *
-     * @param listener
-     */
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.mOnItemLongClickListener = listener;
     }
 
-    /**
-     * 点击事件Listener
-     */
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position, Object item);
     }
 
-    /**
-     * 长按事件Listener
-     */
     public interface OnItemLongClickListener {
-        void onItemLongClick(int position);
+        void onItemLongClick(int position, Object item);
     }
 
 }

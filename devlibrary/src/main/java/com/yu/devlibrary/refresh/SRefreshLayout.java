@@ -38,7 +38,7 @@ import android.widget.AbsListView;
  * the function {@link #setRefreshView(View, LayoutParams)}
  * </p>
  */
-public class XRefreshLayout extends ViewGroup
+public class SRefreshLayout extends ViewGroup
         implements NestedScrollingParent, NestedScrollingChild {
 
     private static final int INVALID_INDEX = -1;
@@ -143,11 +143,11 @@ public class XRefreshLayout extends ViewGroup
         }
     };
 
-    public XRefreshLayout(Context context) {
+    public SRefreshLayout(Context context) {
         this(context, null);
     }
 
-    public XRefreshLayout(Context context, AttributeSet attrs) {
+    public SRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
@@ -395,7 +395,7 @@ public class XRefreshLayout extends ViewGroup
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
 
         mRefreshView.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(120, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(180, MeasureSpec.EXACTLY));
 
         mRefreshViewIndex = -1;
         for (int index = 0; index < getChildCount(); index++) {

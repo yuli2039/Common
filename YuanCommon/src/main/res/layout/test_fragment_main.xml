@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.yu.common.activity.MainActivity">
 
-    <com.yu.devlibrary.refresh.XRefreshLayout
+    <com.yu.devlibrary.refresh.SRefreshLayout
         android:id="@+id/p2r"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,7 +21,7 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent" />-->
 
-    </com.yu.devlibrary.refresh.XRefreshLayout>
+    </com.yu.devlibrary.refresh.SRefreshLayout>
 
 
 </RelativeLayout>

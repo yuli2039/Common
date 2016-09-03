@@ -5,7 +5,6 @@ import com.yu.retrofittest.entity.LoginEn;
 
 import java.util.Map;
 
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -25,11 +24,5 @@ public interface ApiService {
      */
     @GET("http://gank.io/api/search/query/listview/category/Android/count/{count}/page/{page}")
     Observable<GankEn> gank(@Path("count") int count, @Path("page") int page);
-
-    /*
-     * 通过Response的code来判断业务走向，就这样定义接口,然后在map操作符中判断code
-     */
-    @GET("http://gank.io/api/search/query/listview/category/Android/count/{count}/page/{page}")
-    Observable<Response<GankEn>> gank2(@Path("count") int count, @Path("page") int page);
 
 }

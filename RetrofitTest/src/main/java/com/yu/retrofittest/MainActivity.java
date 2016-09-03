@@ -30,7 +30,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
-public class MainActivity extends RxAppCompatActivity {
+public class  MainActivity extends RxAppCompatActivity {
 
     private EditText et;
     private Button btn;
@@ -113,18 +113,6 @@ public class MainActivity extends RxAppCompatActivity {
         ApiService service = HttpMethods.getInstance().createService(ApiService.class);
 
         service.gank(10, 1)
-//                .doOnSubscribe(new Action0() {// 显示loading,方案1
-//                    @Override
-//                    public void call() {
-//                        showLoading();
-//                    }
-//                })
-//                .doOnUnsubscribe(new Action0() {
-//                    @Override
-//                    public void call() {
-//                        dismissLoading();
-//                    }
-//                })
                 .retry(new Func2<Integer, Throwable, Boolean>() {// 设置重试次数小于2且是socket错误才重试
                     @Override
                     public Boolean call(Integer integer, Throwable throwable) {
@@ -133,7 +121,7 @@ public class MainActivity extends RxAppCompatActivity {
                 })
                 .compose(this.<GankEn>bindUntilEvent(ActivityEvent.DESTROY))// 绑定声明周期，防止内存泄露
                 .compose(SchedulersCompat.<GankEn>applyExecutorSchedulers())// 线程切换
-                // 方案2，如果确定是主线程订阅才能在这里显示loading，cancel时同时取消订阅
+                // 如果确定是主线程订阅才能在这里显示loading，cancel时同时取消订阅
                 .subscribe(new SubscriberWL<GankEn>(MainActivity.this, true) {
                     @Override
                     public void onNext(GankEn gn) {

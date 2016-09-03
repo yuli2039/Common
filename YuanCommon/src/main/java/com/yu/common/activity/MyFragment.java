@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yu.common.R;
-import com.yu.devlibrary.refresh.XRefreshLayout;
+import com.yu.devlibrary.refresh.SRefreshLayout;
 import com.yu.devlibrary.sadapter.ListAdapter;
 import com.yu.devlibrary.sadapter.RecyclerAdapter;
 import com.yu.devlibrary.sadapter.multi.ListMultiItemTypeSupport;
 import com.yu.devlibrary.sadapter.multi.RecyclerMultiItemTypeSupport;
 import com.yu.devlibrary.sadapter.viewholder.ListViewHolder;
 import com.yu.devlibrary.sadapter.viewholder.RecyclerViewHolder;
-import com.yu.devlibrary.xlist.XRecyclerView;
+import com.yu.devlibrary.xlist.SRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class MyFragment extends Fragment {
 
-    private XRefreshLayout p2r;
-    private XRecyclerView list;
+    private SRefreshLayout p2r;
+    private SRecyclerView list;
     private MyRecyclerAdapter2 adapter;
 
 //    private XListView list;
@@ -49,8 +49,8 @@ public class MyFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        p2r = (XRefreshLayout) view.findViewById(R.id.p2r);
-        p2r.setOnRefreshListener(new XRefreshLayout.OnRefreshListener() {
+        p2r = (SRefreshLayout) view.findViewById(R.id.p2r);
+        p2r.setOnRefreshListener(new SRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refresh();
@@ -58,11 +58,11 @@ public class MyFragment extends Fragment {
         });
 
         //  test recyclerview
-        list = (XRecyclerView) view.findViewById(R.id.list);
+        list = (SRecyclerView) view.findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new MyRecyclerAdapter2(null);
         list.setAdapter(adapter);
-        list.setLoadMoreListener(new XRecyclerView.LoadMoreListener() {
+        list.setLoadMoreListener(new SRecyclerView.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 loadMore();

@@ -11,21 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ListAdapter
+ * ListView的通用adapter
  *
  * @author yu
  */
 public abstract class ListAdapter<D> extends BaseAdapter {
 
-    /**
-     * 数据集
-     */
     protected final List<D> mDataSet = new ArrayList<>();
-    /**
-     * Item Layout
-     */
     private int mItemLayoutId;
-
     private ListMultiItemTypeSupport<D> mMultiItemSupport;
 
     /**
@@ -57,16 +50,10 @@ public abstract class ListAdapter<D> extends BaseAdapter {
                 : mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
     }
 
-    /**
-     * 根据View Type返回布局资源
-     */
     public int getItemLayout(int type) {
         return mMultiItemSupport == null ? mItemLayoutId : mMultiItemSupport.getItemLayout(type);
     }
 
-    /**
-     * 获取数据集
-     */
     public List<D> getDataSet() {
         return mDataSet;
     }
@@ -142,40 +129,21 @@ public abstract class ListAdapter<D> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * @return
-     */
     @Override
     public int getCount() {
         return mDataSet.size();
     }
 
-    /**
-     * @param position
-     * @return
-     */
     @Override
     public D getItem(int position) {
         return mDataSet.get(position);
     }
 
-    /**
-     * @param position
-     * @return
-     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
-    /**
-     * 封装getView逻辑,将根据viewType获取布局资源、解析布局资源、创建ViewHolder等逻辑封装起来,简化使用流程
-     *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
-     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int layoutId = getItemLayout(getItemViewType(position));
@@ -188,7 +156,7 @@ public abstract class ListAdapter<D> extends BaseAdapter {
     /**
      * 绑定数据到Item View上
      *
-     * @param holder
+     * @param holder   viewholder
      * @param position 数据的位置
      * @param item     数据项
      */

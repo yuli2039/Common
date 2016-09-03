@@ -19,6 +19,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="loading..." />
+        android:text="@string/lmf_loading" />
 
 </LinearLayout>
