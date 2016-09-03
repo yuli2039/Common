@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        applicationId "com.y.greendaotest"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.1.1'
+    }
+}
+
+// Dao相关设置
+greendao {
+    schemaVersion 1 // 版本号
+    daoPackage 'com.y.greendaotest.gen' // 生成代码的包名
+    targetGenDir 'src/main/java' // 路径
+
+//    targetGenDirTest //  设置生成单元测试目录
+//    generateTests //  设置自动生成单元测试用例
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'org.greenrobot:greendao:3.1.1'
+}
