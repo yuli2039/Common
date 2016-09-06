@@ -1,6 +1,7 @@
 package com.yu.devlibrary.refresh;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
@@ -395,7 +396,7 @@ public class SRefreshLayout extends ViewGroup
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
 
         mRefreshView.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(180, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(dp2px(60), MeasureSpec.EXACTLY));
 
         mRefreshViewIndex = -1;
         for (int index = 0; index < getChildCount(); index++) {
@@ -731,6 +732,10 @@ public class SRefreshLayout extends ViewGroup
         }
 
         return false;
+    }
+
+    public static int dp2px(float dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
     public void setOnRefreshListener(OnRefreshListener listener) {

@@ -1,8 +1,10 @@
 package com.yu.devlibrary.xlist;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -50,6 +52,8 @@ public class SListView extends ListView implements AbsListView.OnScrollListener 
         this.listener = listener;
         loadMoreEnable = true;
         loadMoreFooter = new LoadMoreFooter(getContext());
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(50));
+        loadMoreFooter.setLayoutParams(layoutParams);
         super.addFooterView(loadMoreFooter);
         setOnScrollListener(this);
     }
@@ -84,6 +88,10 @@ public class SListView extends ListView implements AbsListView.OnScrollListener 
     @Override
     public void onScroll(AbsListView absListView, int i, int i1, int i2) {
 
+    }
+
+    public static int dp2px(float dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
 }

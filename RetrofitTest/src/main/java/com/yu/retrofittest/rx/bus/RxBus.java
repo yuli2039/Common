@@ -3,7 +3,6 @@ package com.yu.retrofittest.rx.bus;
 
 import android.support.annotation.NonNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,9 +131,7 @@ public class RxBus {
                                public void call(Object o) {
                                    try {
                                        m.invoke(subscriber, o);
-                                   } catch (IllegalAccessException e) {
-                                       e.printStackTrace();
-                                   } catch (InvocationTargetException e) {
+                                   } catch (Exception e) {
                                        e.printStackTrace();
                                    }
                                }

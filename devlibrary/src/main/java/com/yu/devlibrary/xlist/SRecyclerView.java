@@ -1,6 +1,7 @@
 package com.yu.devlibrary.xlist;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -124,7 +125,7 @@ public class SRecyclerView extends RecyclerView {
         if (enabled) {
             sFooterTypes.add(FOOTER_INIT_INDEX + mFooterViews.size());
             LoadMoreFooter footer = new LoadMoreFooter(mContext);
-            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
+            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(50));
             footer.setLayoutParams(layoutParams);
             mFooterViews.add(footer);
         }
@@ -396,5 +397,9 @@ public class SRecyclerView extends RecyclerView {
 
     public interface LoadMoreListener {
         void onLoadMore();
+    }
+
+    public static int dp2px(float dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 }
