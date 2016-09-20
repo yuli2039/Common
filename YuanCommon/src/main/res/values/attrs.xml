@@ -15,6 +15,14 @@
         <attr name="round_radius" format="dimension" />
     </declare-styleable>
 
+    <!-- banner指示器 -->
+    <declare-styleable name="ViewPagerIndicator">
+        <attr name="selectedColor" format="color" />
+        <attr name="deselectedColor" format="color" />
+        <attr name="selectedDrawable" format="reference" />
+        <attr name="deselectedDrawable" format="reference" />
+        <attr name="indicatorSpacing" format="dimension" />
+    </declare-styleable>
 
     <declare-styleable name="ProgressWheel">
         <attr name="matProg_progressIndeterminate" format="boolean" />

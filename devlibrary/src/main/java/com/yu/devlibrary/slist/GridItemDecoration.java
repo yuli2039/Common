@@ -1,4 +1,4 @@
-package com.yu.devlibrary.xlist;
+package com.yu.devlibrary.slist;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

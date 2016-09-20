@@ -1,30 +1,38 @@
 package com.yu.retrofittest.rx;
 
-import java.net.SocketTimeoutException;
+import com.yu.retrofittest.entity.BaseEntity;
 
 import rx.Observable;
-import rx.functions.Func2;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * 做重试和线程切换操作
+ *
+ * @author yu
  */
 public class DefaultTransformer<T> implements Observable.Transformer<T, T> {
     @Override
     public Observable<T> call(Observable<T> tObservable) {
-        return tObservable
-                .retry(new Func2<Integer, Throwable, Boolean>() {// 重试
+        return tObservable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<T, T>() {// 通用错误处理，判断code
                     @Override
-                    public Boolean call(Integer integer, Throwable throwable) {
-                        return throwable instanceof SocketTimeoutException && integer < 1;
+                    public T call(T t) {
+                        if (t instanceof BaseEntity) {
+                            BaseEntity e = (BaseEntity) t;
+                            int code = e.getCode();
+                            if (!String.valueOf(code).startsWith("2"))// 返回的业务code不是2开头的，直接走错误流程
+                                throw new ApiException(code, e.getMessage());
+                        }
+                        return t;
                     }
-                })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .unsubscribeOn(Schedulers.io())
-                .compose(SchedulersCompat.<T>applyIoSchedulers());// 线程切换
+                });
     }
 
-    public static DefaultTransformer create() {
-        return new DefaultTransformer();
+    public static <T> DefaultTransformer<T> create() {
+        return new DefaultTransformer<>();
     }
 }

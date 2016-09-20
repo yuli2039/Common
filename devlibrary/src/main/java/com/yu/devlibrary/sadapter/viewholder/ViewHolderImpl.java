@@ -75,7 +75,6 @@ public class ViewHolderImpl {
     public void setBackgroundColor(int viewId, int color) {
         View target = findViewById(viewId);
         target.setBackgroundColor(color);
-
     }
 
     public void setBackgroundResource(int viewId, int resId) {

@@ -1,4 +1,4 @@
-package com.yu.devlibrary.xlist;
+package com.yu.devlibrary.slist;
 
 import android.content.Context;
 import android.util.AttributeSet;

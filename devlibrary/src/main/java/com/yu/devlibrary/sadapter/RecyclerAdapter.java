@@ -1,12 +1,10 @@
 package com.yu.devlibrary.sadapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yu.devlibrary.sadapter.multi.RecyclerMultiItemTypeSupport;
 import com.yu.devlibrary.sadapter.viewholder.RecyclerViewHolder;
 
 import java.util.ArrayList;
@@ -17,176 +15,65 @@ import java.util.List;
  *
  * @author yu
  */
-public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerViewHolder> {
+public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerViewHolder> implements DataHelper<D> {
 
-    protected final List<D> mDataSet = new ArrayList<>();
-
-    private int mItemLayoutId;
-    private RecyclerMultiItemTypeSupport<D> mMultiItemSupport;
+    protected List<D> mDataSet;
+    private int[] layoutIds;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
     /**
-     * @param layoutId 布局id
-     * @param datas    数据集
+     * @param data      数据集
+     * @param layoutIds 布局ids
      */
-    public RecyclerAdapter(int layoutId, List<D> datas) {
-        mItemLayoutId = layoutId;
-        addItems(datas);
-    }
-
-    /**
-     * @param support 多种条目类型支持接口
-     * @param datas   数据集
-     */
-    public RecyclerAdapter(RecyclerMultiItemTypeSupport<D> support, List<D> datas) {
-        mMultiItemSupport = support;
-        addItems(datas);
-    }
-
-    public List<D> getDataSet() {
-        return mDataSet;
-    }
-
-    public boolean contains(D d) {
-        return mDataSet.contains(d);
-    }
-
-    /**
-     * 追加单个数据
-     *
-     * @param item
-     */
-    public void addItem(D item) {
-        mDataSet.add(item);
-        notifyDataSetChanged();
-//        notifyItemInserted(mDataSet.size());
-    }
-
-    /**
-     * 追加数据集
-     *
-     * @param items
-     */
-    public void addItems(List<D> items) {
-//        int startIndex = mDataSet.size();
-        if (items != null && !items.isEmpty()) {
-            mDataSet.addAll(items);
-            notifyDataSetChanged();
-        }
-//        notifyItemRangeInserted(startIndex, items.size());
-    }
-
-    /**
-     * 添加单个数据到列表头部
-     *
-     * @param item
-     */
-    public void addItemToHead(D item) {
-        mDataSet.add(0, item);
-        notifyDataSetChanged();
-//        notifyItemInserted(0);
-    }
-
-    /**
-     * 添加数据集到列表头部
-     *
-     * @param items
-     */
-    public void addItemsToHead(List<D> items) {
-        if (items != null && !items.isEmpty()) {
-            mDataSet.addAll(0, items);
-            notifyDataSetChanged();
-        }
-//        notifyItemRangeInserted(0, items.size());
-    }
-
-    /**
-     * 移除某个数据
-     *
-     * @param position
-     */
-    public void remove(int position) {
-        mDataSet.remove(position);
-        notifyDataSetChanged();
-//        notifyItemRemoved(position);
-    }
-
-    /**
-     * 移除某个数据项
-     *
-     * @param item
-     */
-    public void remove(D item) {
-//        int index = mDataSet.indexOf(item);
-        mDataSet.remove(item);
-        notifyDataSetChanged();
-//        notifyItemRemoved(index);
-    }
-
-    public void clear() {
-//        int size = mDataSet.size();
-        mDataSet.clear();
-        notifyDataSetChanged();
-//        notifyItemRangeRemoved(0, size);
-    }
-
-    /**
-     * 删除原先的数据，添加新数据后，刷新view
-     *
-     * @param items
-     */
-    public void refreshWithNewData(List<D> items) {
-        mDataSet.clear();
-        if (items != null && !items.isEmpty())
-            mDataSet.addAll(items);
-        notifyDataSetChanged();
-    }
-
-    public D getItem(int position) {
-        return mDataSet.get(position);
+    public RecyclerAdapter(List<D> data, int... layoutIds) {
+        if (data == null)
+            this.mDataSet = new ArrayList<>();
+        else
+            this.mDataSet = data;
+        this.layoutIds = layoutIds;
     }
 
     @Override
     public int getItemCount() {
-        return mDataSet.size();
+        return mDataSet == null ? 0 : mDataSet.size();
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int itemLayout = getItemLayout(viewType);
-        Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(itemLayout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutIds[viewType], parent, false);
         return new RecyclerViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         final D item = getItem(position);
-        // 绑定数据
         onBindData(holder, position, item);
-        // 设置单击事件
         setupItemClickListener(holder, position);
-        // 设置长按事件
         setupItemLongClickListener(holder, position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (mMultiItemSupport == null || mDataSet.isEmpty())
-                ? super.getItemViewType(position)
-                : mMultiItemSupport.getItemViewType(position, mDataSet.get(position));
+        return getLayoutIndex(position, mDataSet.get(position));
     }
 
-    public int getItemLayout(int type) {
-        return mMultiItemSupport == null ? mItemLayoutId : mMultiItemSupport.getItemLayout(type);
+    /**
+     * 指定item布局样式在layoutIds的索引。默认为第一个
+     * 多条目类型时复写此方法
+     *
+     * @param position 角标
+     * @param item     对象
+     * @return 该item使用第几个layoutId
+     */
+    public int getLayoutIndex(int position, D item) {
+        return 0;
     }
-
 
     /**
      * 绑定数据到Item View上
      *
-     * @param holder viewholder
+     * @param holder   viewholder
      * @param position 数据的位置
      * @param item     数据项
      */
@@ -216,6 +103,81 @@ public abstract class RecyclerAdapter<D> extends RecyclerView.Adapter<RecyclerVi
                 return false;
             }
         });
+    }
+
+    @Override
+    public boolean contains(D d) {
+        return mDataSet.contains(d);
+    }
+
+    @Override
+    public void addItem(D item) {
+        mDataSet.add(item);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void addItems(List<D> items) {
+        if (items != null && !items.isEmpty()) {
+            mDataSet.addAll(items);
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void addItemToHead(D item) {
+        mDataSet.add(0, item);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void addItemsToHead(List<D> items) {
+        if (items != null && !items.isEmpty()) {
+            mDataSet.addAll(0, items);
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void remove(int position) {
+        mDataSet.remove(position);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void remove(D item) {
+        mDataSet.remove(item);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void clear() {
+        mDataSet.clear();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void refreshWithNewData(List<D> items) {
+        mDataSet.clear();
+        if (items != null && !items.isEmpty())
+            mDataSet.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public D getItem(int position) {
+        return mDataSet.get(position);
+    }
+
+    @Override
+    public void modify(D oldData, D newData) {
+        modify(mDataSet.indexOf(oldData), newData);
+    }
+
+    @Override
+    public void modify(int index, D newData) {
+        mDataSet.set(index, newData);
+        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

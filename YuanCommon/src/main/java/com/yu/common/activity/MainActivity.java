@@ -27,10 +27,7 @@ public class MainActivity extends SimpleActivity {
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new MyFragment());
-        fragments.add(new MyFragment());
-        fragments.add(new MyFragment());
-        fragments.add(new MyFragment());
-        fragments.add(new MyFragment());
+        fragments.add(new MyFragment2());
 
         vp.setAdapter(new MyAdapter(getSupportFragmentManager(), fragments));
     }

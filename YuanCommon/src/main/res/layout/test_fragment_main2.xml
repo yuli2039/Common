@@ -6,20 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.yu.common.activity.MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="listview" />
+
     <com.yu.devlibrary.refresh.SRefreshLayout
         android:id="@+id/p2r"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.yu.devlibrary.slist.SRecyclerView
+        <com.yu.devlibrary.slist.SListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <!--<com.yu.devlibrary.slist.SListView-->
-        <!--android:id="@+id/list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
 
     </com.yu.devlibrary.refresh.SRefreshLayout>
 

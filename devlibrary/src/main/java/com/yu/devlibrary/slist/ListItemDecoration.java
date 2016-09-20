@@ -1,4 +1,4 @@
-package com.yu.devlibrary.xlist;
+package com.yu.devlibrary.slist;
 
 /*
  * Copyright (C) 2014 The Android Open Source Project

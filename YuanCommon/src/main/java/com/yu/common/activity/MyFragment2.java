@@ -5,17 +5,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.yu.common.R;
 import com.yu.devlibrary.refresh.SRefreshLayout;
-import com.yu.devlibrary.sadapter.RecyclerAdapter;
-import com.yu.devlibrary.sadapter.viewholder.RecyclerViewHolder;
-import com.yu.devlibrary.slist.SRecyclerView;
+import com.yu.devlibrary.sadapter.ListAdapter;
+import com.yu.devlibrary.sadapter.viewholder.ListViewHolder;
+import com.yu.devlibrary.slist.SListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +24,12 @@ import java.util.List;
  * @author yu
  *         Create on 16/8/28.
  */
-public class MyFragment extends Fragment {
+public class MyFragment2 extends Fragment {
 
     private SRefreshLayout p2r;
-    private SRecyclerView list;
-    private MyRecyclerAdapter2 adapter;
+
+    private SListView list;
+    private MyListAdapter1 adapter;
 
     private int loadMoreCount = 0;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -36,7 +37,7 @@ public class MyFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.test_fragment_main, null);
+        return inflater.inflate(R.layout.test_fragment_main2, null);
     }
 
     @Override
@@ -51,23 +52,23 @@ public class MyFragment extends Fragment {
             }
         });
 
-        //  test recyclerview
-        list = (SRecyclerView) view.findViewById(R.id.list);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new MyRecyclerAdapter2(null);
-        adapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+
+        //  test listview
+        list = (SListView) view.findViewById(R.id.list);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(int position, Object item) {
-                Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), i+"", Toast.LENGTH_SHORT).show();
             }
         });
-        list.setAdapter(adapter);
-        list.setLoadMoreListener(new SRecyclerView.LoadMoreListener() {
+        adapter = new MyListAdapter1(null);
+        list.setLoadMoreListener(new SListView.LoadMoreListener() {
             @Override
             public void onLoadMore() {
                 loadMore();
             }
         });
+        list.setAdapter(adapter);
 
         p2r.setRefreshing(true);
     }
@@ -117,8 +118,8 @@ public class MyFragment extends Fragment {
         }).start();
     }
 
-    private static class MyRecyclerAdapter2 extends RecyclerAdapter<Object> {
-        public MyRecyclerAdapter2(List<Object> datas) {
+    private static class MyListAdapter1 extends ListAdapter<Object> {
+        public MyListAdapter1(List<Object> datas) {
             super(datas, R.layout.test_item1, R.layout.test_item2);
         }
 
@@ -128,7 +129,7 @@ public class MyFragment extends Fragment {
         }
 
         @Override
-        protected void onBindData(RecyclerViewHolder holder, int position, Object item) {
+        protected void onBindData(ListViewHolder holder, int position, Object item) {
             switch (getItemViewType(position)) {
                 case 0:
                     holder.setText(R.id.tv1, "1111111");
