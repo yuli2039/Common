@@ -1,1 +1,1 @@
-include ':YuanCommon', ':RetrofitTest', ':devlibrary', ':falcon', ':greendaotest'
+ include ':Widgets', ':mvpfw', ':devlibrary', ':falcon', ':greendaotest'
