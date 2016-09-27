@@ -5,7 +5,6 @@ import android.os.Looper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,27 +146,4 @@ public class EventBus {
             e.printStackTrace();
         }
     }
-}
-
-class PostingThread {
-    List<Object> mEventQueue = new ArrayList<>();
-    boolean isMainThread;
-    boolean isPosting;
-}
-
-class SubscribeMethod {
-    Method method;
-    ThreadMode threadMode;
-    Object subscriber;
-
-    public SubscribeMethod(Method method, ThreadMode threadMode, Object subscriber) {
-        this.method = method;
-        this.threadMode = threadMode;
-        this.subscriber = subscriber;
-    }
-
-}
-
-enum ThreadMode {
-    UI, Async
 }

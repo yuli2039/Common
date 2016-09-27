@@ -38,6 +38,7 @@ import android.widget.AbsListView;
  * Maybe you need a custom refresh components, can be implemented by call
  * the function {@link #setRefreshView(View, LayoutParams)}
  * </p>
+ * 非入侵式下拉刷新，支持recycleView、listview、scrollview和普通view
  */
 public class SRefreshLayout extends ViewGroup
         implements NestedScrollingParent, NestedScrollingChild {

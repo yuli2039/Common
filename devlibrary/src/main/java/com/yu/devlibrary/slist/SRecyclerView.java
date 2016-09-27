@@ -144,7 +144,7 @@ public class SRecyclerView extends RecyclerView {
         mWrapAdapter = new WrapAdapter(adapter);
         super.setAdapter(mWrapAdapter);
         adapter.registerAdapterDataObserver(mDataObserver);
-        mDataObserver.onChanged();
+//        mDataObserver.onChanged();//
     }
 
     @Override

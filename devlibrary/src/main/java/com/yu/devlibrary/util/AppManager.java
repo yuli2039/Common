@@ -170,25 +170,25 @@ public class AppManager {
         private static final LinkedList<Activity> STACK = new LinkedList<>();
 
         // 入栈
-        public static void add(Activity aty) {
+        private static void add(Activity aty) {
             synchronized (ActivityStack.class) {
                 STACK.addLast(aty);
             }
         }
 
         // 出栈
-        public static void remove(Activity aty) {
+        private static void remove(Activity aty) {
             synchronized (ActivityStack.class) {
                 if (STACK.contains(aty))
                     STACK.remove(aty);
             }
         }
 
-        public static Activity getCurrentActicity() {
+        private static Activity getCurrentActicity() {
             return STACK.getLast();
         }
 
-        public static boolean isExists(Class<? extends Activity> clazz) {
+        private static boolean isExists(Class<? extends Activity> clazz) {
             for (Activity aty : STACK) {
                 if (aty.getClass().getSimpleName().equals(clazz.getSimpleName()))
                     return true;
@@ -196,7 +196,7 @@ public class AppManager {
             return false;
         }
 
-        public static void exitApp() {
+        private static void exitApp() {
             synchronized (ActivityStack.class) {
                 List<Activity> copy = new LinkedList<>(STACK);
                 for (Activity aty : copy) {
@@ -208,7 +208,7 @@ public class AppManager {
             }
         }
 
-        public static void finishExcept(Class<? extends Activity> clazz) {
+        private static void finishExcept(Class<? extends Activity> clazz) {
             synchronized (ActivityStack.class) {
                 List<Activity> copy = new LinkedList<>(STACK);
                 for (Activity aty : copy) {
