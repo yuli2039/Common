@@ -46,17 +46,14 @@ public class AlbumHelper {
         Cursor cur = cr.query(Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, null);
 
         if (cur.moveToFirst()) {
-            //	int _id;
             int image_id;
             String image_path;
-            //	int _idColumn = cur.getColumnIndex(Thumbnails._ID);
-            int image_idColumn = cur.getColumnIndex(Thumbnails.IMAGE_ID);
+
+            int imageIdColumn = cur.getColumnIndex(Thumbnails.IMAGE_ID);
             int dataColumn = cur.getColumnIndex(Thumbnails.DATA);
 
             while (cur.moveToNext()) {
-                // Get the field values
-                //	_id = cur.getInt(_idColumn);
-                image_id = cur.getInt(image_idColumn);
+                image_id = cur.getInt(imageIdColumn);
                 image_path = cur.getString(dataColumn);
 
                 thumbnailList.put(String.valueOf(image_id), image_path);
@@ -79,18 +76,11 @@ public class AlbumHelper {
         getThumbnail();
 
         // 构造相册索引
-        String columns[] = new String[]{Media._ID, Media.BUCKET_ID, Media.DATA,
-                Media.BUCKET_DISPLAY_NAME};
-        String selection = Media.MIME_TYPE + "=? or " + Media.MIME_TYPE + "=? or " + Media.MIME_TYPE
-                + "=?";
+        String columns[] = new String[]{Media._ID, Media.BUCKET_ID, Media.DATA, Media.BUCKET_DISPLAY_NAME};
+        String selection = Media.MIME_TYPE + "=? or " + Media.MIME_TYPE + "=? or " + Media.MIME_TYPE + "=?";
         String[] selectionArgs = new String[]{"image/jpg", "image/jpeg", "image/png"};
 
-        Cursor cur = cr.query(
-                Media.EXTERNAL_CONTENT_URI, // uri
-                columns, // 列
-                selection, // 条件
-                selectionArgs, // 条件参数
-                Media.DATE_MODIFIED);//排序
+        Cursor cur = cr.query(Media.EXTERNAL_CONTENT_URI, columns, selection, selectionArgs, Media.DATE_MODIFIED);
 
         if (cur.moveToFirst()) {
             // 获取指定列的索引
@@ -122,7 +112,7 @@ public class AlbumHelper {
     /**
      * 得到图片集
      */
-    public List<ImageBucket> getImagesBucketList( ) {
+    public List<ImageBucket> getImagesBucketList() {
         if (!hasBuildImagesBucket) {
             buildImagesBucketList();
         }

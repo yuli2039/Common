@@ -26,7 +26,7 @@ public class CropParams {
     public Uri uri;
 
     public CropParams(Context context) {
-        // 默认的比例 1:1 尺寸 300*300
+        // 默认 1:1 300*300
         this(context, 1, 1, 300, 300);
     }
 
@@ -39,10 +39,7 @@ public class CropParams {
             dir.mkdirs();
         }
 
-        uri = Uri.fromFile(dir)
-                .buildUpon()
-                .appendPath("tempCropFile.jpg")
-                .build();
+        uri = Uri.fromFile(dir).buildUpon().appendPath("tempCropFile.jpg").build();
 
         type = "image/*";
         outputFormat = Bitmap.CompressFormat.JPEG.toString();

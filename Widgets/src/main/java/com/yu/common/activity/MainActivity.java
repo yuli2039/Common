@@ -14,7 +14,6 @@ import java.util.List;
 
 public class MainActivity extends SimpleActivity {
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.test_activity_main;
@@ -50,4 +49,5 @@ public class MainActivity extends SimpleActivity {
             return fmts.size();
         }
     }
+
 }
