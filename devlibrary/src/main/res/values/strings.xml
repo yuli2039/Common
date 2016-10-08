@@ -4,7 +4,7 @@
     <!-- 下拉刷新 -->
     <string name="ptr_normal">下拉刷新</string>
     <string name="ptr_refreshing">正在刷新</string>
-    <string name="ptr_release_refresh">释放立即刷新</string>
+    <string name="ptr_release_refresh">释放刷新</string>
 
     <!-- 加载更多 -->
     <string name="lmf_loading">正在加载</string>

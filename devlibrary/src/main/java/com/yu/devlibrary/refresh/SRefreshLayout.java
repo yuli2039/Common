@@ -1,7 +1,6 @@
 package com.yu.devlibrary.refresh;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
@@ -46,11 +45,11 @@ public class SRefreshLayout extends ViewGroup
     private static final int INVALID_INDEX = -1;
     private static final int INVALID_POINTER = -1;
     //the default height of the RefreshView
-    private static final int DEFAULT_REFRESH_SIZE_DP = 30;
+    private static final int DEFAULT_REFRESH_SIZE_DP = 60;
     //the animation duration of the RefreshView scroll to the refresh point or the start point
     private static final int DEFAULT_ANIMATE_DURATION = 200;
     // the threshold of the trigger to refresh
-    private static final int DEFAULT_REFRESH_TARGET_OFFSET_DP = 50;
+    private static final int DEFAULT_REFRESH_TARGET_OFFSET_DP = 45;
 
     private static final float DRAG_RATE = .5f;
     private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
@@ -171,16 +170,10 @@ public class SRefreshLayout extends ViewGroup
 
     protected void onCreateRefreshView() {
         mRefreshView = new RefreshHeader(getContext());
-
-        if (mRefreshView instanceof IRefreshStatus) {
-            mIRefreshStatus = (IRefreshStatus) mRefreshView;
-        } else {
-            throw new ClassCastException("the refreshView must implement the interface IRefreshStatus");
-        }
-
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, mSpinnerSize);
-        addView(mRefreshView, layoutParams);
+        mIRefreshStatus = (IRefreshStatus) mRefreshView;
+        addView(mRefreshView);
     }
+
 
     /**
      * Note
@@ -397,7 +390,7 @@ public class SRefreshLayout extends ViewGroup
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
 
         mRefreshView.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(dp2px(60), MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(mSpinnerSize, MeasureSpec.EXACTLY));
 
         mRefreshViewIndex = -1;
         for (int index = 0; index < getChildCount(); index++) {
@@ -735,9 +728,9 @@ public class SRefreshLayout extends ViewGroup
         return false;
     }
 
-    public static int dp2px(float dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-    }
+//    public static int dp2px(float dp) {
+//        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+//    }
 
     public void setOnRefreshListener(OnRefreshListener listener) {
         mOnRefreshListener = listener;

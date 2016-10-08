@@ -65,8 +65,7 @@ public class SRecyclerView extends RecyclerView {
 
     //根据header的ViewType判断是哪个header
     private View getHeaderViewByType(int itemType) {
-        if (!isHeaderType(itemType))
-            return null;
+        if (!isHeaderType(itemType)) return null;
         return mHeaderViews.get(itemType - HEADER_INIT_INDEX);
     }
 
@@ -90,8 +89,7 @@ public class SRecyclerView extends RecyclerView {
 
     //根据footer的ViewType判断是哪个footer
     private View getFooterViewByType(int itemType) {
-        if (!isFooterType(itemType))
-            return null;
+        if (!isFooterType(itemType)) return null;
         return mFooterViews.get(itemType - FOOTER_INIT_INDEX);
     }
 
@@ -229,7 +227,7 @@ public class SRecyclerView extends RecyclerView {
         }
     }
 
-    public class WrapAdapter extends Adapter<ViewHolder> {
+    private class WrapAdapter extends Adapter<ViewHolder> {
 
         private Adapter adapter;
 
@@ -305,7 +303,7 @@ public class SRecyclerView extends RecyclerView {
                     int itemViewType = adapter.getItemViewType(adjPosition);
 
                     if (isReservedItemViewType(itemViewType)) {
-                        throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 ");
+                        throw new IllegalStateException("SRecyclerView require itemViewType in adapter should be less than 10000 ");
                     }
                     return itemViewType;
                 }
