@@ -12,14 +12,18 @@
     <EditText
         android:id="@+id/et"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number" />
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_below="@id/et"
+        android:id="@+id/et2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <CheckBox
         android:id="@+id/cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/et"
+        android:layout_below="@id/et2"
         android:inputType="number" />
 
     <TextView

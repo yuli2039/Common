@@ -1,4 +1,4 @@
-package com.yu.retrofittest.http;
+package com.yu.retrofittest.http.interceptor;
 
 import java.io.IOException;
 

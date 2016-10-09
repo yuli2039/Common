@@ -12,8 +12,8 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.yu.retrofittest.R;
-import com.yu.retrofittest.entity.GankEn;
 import com.yu.retrofittest.entity.LoginEn;
+import com.yu.retrofittest.entity.TestEn;
 import com.yu.retrofittest.http.ApiService;
 import com.yu.retrofittest.http.HttpMethods;
 import com.yu.retrofittest.presenter.BasePresenter;
@@ -31,6 +31,7 @@ import rx.functions.Func1;
 public class MainActivity extends BaseActivity {
 
     private EditText et;
+    private EditText et2;
     private Button btn;
     private Button btnJump;
     private CheckBox cb;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
     protected void init() {
         RxBus.getInstance().register(this);// 注册rxbus
         et = (EditText) findViewById(R.id.et);
+        et2 = (EditText) findViewById(R.id.et2);
         btn = (Button) findViewById(R.id.btn);
         btnJump = (Button) findViewById(R.id.btnJump);
         cb = (CheckBox) findViewById(R.id.cb);
@@ -114,14 +116,14 @@ public class MainActivity extends BaseActivity {
     public void btnSend() {
 
         ApiService service = HttpMethods.getInstance().createService(ApiService.class);
-
-        service.gank(10, 1)
-                .compose(DefaultTransformer.<GankEn>create())// 线程切换
-                .subscribe(new ApiSubscriber<GankEn>(MainActivity.this) {
+        String s1 = et.getText().toString().trim();
+        String s2 = et2.getText().toString().trim();
+        service.login(s1, s2)
+                .compose(DefaultTransformer.<TestEn>create())
+                .subscribe(new ApiSubscriber<TestEn>(this) {
                     @Override
-                    public void onNext(GankEn gn) {
-                        if (gn.getResults() != null && !gn.getResults().isEmpty())
-                            Log.e("onNext", gn.getResults().get(0).getDesc());
+                    public void onNext(TestEn testEn) {
+                        Log.e("_sub","<><><><><><><><>onNext<><><><><><><>");
                     }
                 });
     }

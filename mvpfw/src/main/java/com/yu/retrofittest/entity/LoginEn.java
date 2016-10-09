@@ -1,6 +1,8 @@
 package com.yu.retrofittest.entity;
 
 /**
+ * test rxbus event
+ *
  * @author yu
  *         Create on 16/7/13.
  */

@@ -1,11 +1,11 @@
 package com.yu.retrofittest.http;
 
-import android.util.Log;
+import com.yu.retrofittest.http.interceptor.HeaderInterceptor;
+import com.yu.retrofittest.http.interceptor.LoggerInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,24 +21,15 @@ public class HttpMethods {
 
     private Retrofit retrofit;
 
-    //构造方法私有
     private HttpMethods() {
 //        InputStream in = null;// TODO 拿到证书的输入流
 //        HttpsManager.SSLParams sslp = HttpsManager.getSslSocketFactory(new InputStream[]{in}, null, null);
 
-        HttpLoggingInterceptor logger = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Log.e("logger", message);
-            }
-        });
-        logger.setLevel(HttpLoggingInterceptor.Level.BODY);
-
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-//                .sslSocketFactory(sslp.sSLSocketFactory)
-                .addInterceptor(logger)
+                .addInterceptor(new LoggerInterceptor("_okhttp",true))
                 .addInterceptor(new HeaderInterceptor())
+//                .sslSocketFactory(sslp.sSLSocketFactory)
 //                .addInterceptor(new GzipRequsetInterceptor())
 //                .addInterceptor(new CacheInterceptor())// cache拦截器必须配合cache目录才生效
 //                .cache(new Cache(Environment.getExternalStorageDirectory(), 10 * 1024 * 1024))
