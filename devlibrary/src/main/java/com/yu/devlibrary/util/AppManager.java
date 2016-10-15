@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class AppManager {
 
-    private static Application sContext;
+    private static Context sContext;
 
     private static final int STATUS_FORCE_KILLED = -1;
     private static final int STATUS_NORMAL = 0;
@@ -27,8 +27,8 @@ public class AppManager {
     /**
      * 当前应用的状态，默认为被回收状态；
      * ps：当最小化应用后，如果被强杀或者回收了，此值会重置为默认；
-     * 我们在应用的第一个界面（WelcomeActivity）修改此值为normal状态，在BaseActivity中判断此值，
-     * 如果处于回收状态，则可以进行重启等炒作，否则才进行初始化等操作，以此规避回收后恢复界面时某些对象为空引起crash问题；
+     * 我们在应用的第一个界面（WelcomeActivity）修改此值为normal状态，在BaseActivity中每次初始化前判断此值，
+     * 如果处于回收状态，则可以进行重启等操作，否则才进行初始化，以此规避回收后恢复界面时某些对象为空引起crash问题；
      */
     private int appStatus = STATUS_FORCE_KILLED;
     private int activeCount = 0;// 当前活动的activity数
@@ -47,7 +47,7 @@ public class AppManager {
     }
 
     public void init(Application application) {
-        sContext = application;
+        sContext = application.getApplicationContext();
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -118,11 +118,12 @@ public class AppManager {
     }
 
 
+
     /**
      * 跳转目标activity
      */
     public static void jump(Class<? extends Activity> clazz) {
-        Activity context = ActivityStack.getCurrentActicity();
+        Activity context = ActivityStack.getCurrentActivity();
         context.startActivity(new Intent(context, clazz));
     }
 
@@ -130,7 +131,7 @@ public class AppManager {
      * 跳转目标activity，带参数
      */
     public static void jump(Class<? extends Activity> clazz, String key, Serializable value) {
-        Activity context = ActivityStack.getCurrentActicity();
+        Activity context = ActivityStack.getCurrentActivity();
         context.startActivity(new Intent(context, clazz).putExtra(key, value));
     }
 
@@ -138,7 +139,7 @@ public class AppManager {
      * 获取当前栈顶的activity
      */
     public static Activity getCurrentActicity() {
-        return ActivityStack.getCurrentActicity();
+        return ActivityStack.getCurrentActivity();
     }
 
     /**
@@ -184,7 +185,7 @@ public class AppManager {
             }
         }
 
-        private static Activity getCurrentActicity() {
+        private static Activity getCurrentActivity() {
             return STACK.getLast();
         }
 
@@ -212,8 +213,7 @@ public class AppManager {
             synchronized (ActivityStack.class) {
                 List<Activity> copy = new LinkedList<>(STACK);
                 for (Activity aty : copy) {
-                    if (!aty.getClass().equals(clazz))
-                        aty.finish();
+                    if (!aty.getClass().equals(clazz)) aty.finish();
                 }
                 copy.clear();
             }

@@ -21,6 +21,7 @@ public class CacheInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         if (!NetUtils.isOnline()) {
+            // 没有网络时强制使用缓存,即时缓存已过期,如果没有缓存,会返回504 Unsatisfiable Request
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();

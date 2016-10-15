@@ -35,7 +35,14 @@ public final class ScreenUtils {
      * dp转px
      */
     public static int dp2px(float dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density + 0.5f);
+    }
+
+    /**
+     * 将px转换成dp
+     */
+    public static int px2dp(float px) {
+        return (int) (px / Resources.getSystem().getDisplayMetrics().density + 0.5f);
     }
 
     /**
