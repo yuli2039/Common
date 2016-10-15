@@ -42,13 +42,15 @@ public class ViewPagerIndicator extends LinearLayout implements ViewPager.OnPage
     private int mDeselectedDrawable = -1;
     @Dimension
     private int mIndicatorSpacing = 5;
-
+    
+    private int dataSize;
     /**
      * Set this after setting the adapter to the pager.
      *
      * @param pager the connected viewpager
+     * @param dataSize
      */
-    public void setPager(ViewPager pager) {
+    public void setPager(ViewPager pager, int dataSize) {
         if (mPager != null) {
             mPager.removeOnPageChangeListener(this);
             mPager.removeOnAdapterChangeListener(this);
@@ -57,7 +59,8 @@ public class ViewPagerIndicator extends LinearLayout implements ViewPager.OnPage
         }
 
         mPager = pager;
-        initializeIndicatorBar(mPager.getAdapter().getCount());
+        this.dataSize = dataSize;
+        initializeIndicatorBar(dataSize);
         mPager.addOnPageChangeListener(this);
         mPager.addOnAdapterChangeListener(this);
         mPager.getAdapter().registerDataSetObserver(mDatasetObserver);
@@ -116,7 +119,7 @@ public class ViewPagerIndicator extends LinearLayout implements ViewPager.OnPage
             addView(img, lp);
         }
 
-        setSelectedIndicator(mPager.getCurrentItem());
+        setSelectedIndicator(mPager.getCurrentItem() % dataSize);
     }
 
     private void setSelectedIndicator(int selected) {
@@ -155,7 +158,7 @@ public class ViewPagerIndicator extends LinearLayout implements ViewPager.OnPage
 
     @Override
     public void onPageSelected(int position) {
-        setSelectedIndicator(position);
+        setSelectedIndicator(position % dataSize);
     }
 
     @Override
@@ -168,7 +171,7 @@ public class ViewPagerIndicator extends LinearLayout implements ViewPager.OnPage
             oldAdapter.unregisterDataSetObserver(mDatasetObserver);
         }
         if (newAdapter != null) {
-            initializeIndicatorBar(newAdapter.getCount());
+           // initializeIndicatorBar(newAdapter.getCount());
             newAdapter.registerDataSetObserver(mDatasetObserver);
         }
     }
@@ -178,7 +181,7 @@ public class ViewPagerIndicator extends LinearLayout implements ViewPager.OnPage
         public void onChanged() {
             super.onChanged();
 
-            initializeIndicatorBar(mPager.getAdapter().getCount());
+            initializeIndicatorBar(dataSize);
         }
     };
 }
