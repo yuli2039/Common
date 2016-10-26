@@ -46,7 +46,10 @@ final class ApiResponseConverter<T> implements Converter<ResponseBody, T> {
                 throw new ApiException(code, jsonObject.optString("message", ""));
             } else {
                 // 如果是三段的json,取出data字符串,需要配置键值,默认data
-                if (flag) jsonStr = jsonObject.optString("data");
+                if (flag) {
+                    jsonStr = jsonObject.optString("data");
+                    if ("".equals(jsonStr)) jsonStr = "{}";
+                }
                 InputStream inputStream = new ByteArrayInputStream(jsonStr.getBytes());
                 Reader reader = new InputStreamReader(inputStream, "utf-8");
                 JsonReader jsonReader = gson.newJsonReader(reader);

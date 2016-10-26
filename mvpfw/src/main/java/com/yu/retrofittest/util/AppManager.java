@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class AppManager {
 
-    private static Application sContext;
+    private static Context sContext;
 
     private static final int STATUS_FORCE_KILLED = -1;
     private static final int STATUS_NORMAL = 0;
@@ -47,7 +47,7 @@ public class AppManager {
     }
 
     public void init(Application application) {
-        sContext = application;
+        sContext = application.getApplicationContext();
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -117,24 +117,21 @@ public class AppManager {
         return appStatus == STATUS_FORCE_KILLED;
     }
 
-    
+
     /**
      * 跳转目标activity
      */
     public static void jump(Class<? extends Activity> clazz) {
-        ActivityStack.getCurrentActicity().startActivity(
-                new Intent(ActivityStack.getCurrentActicity(), clazz)
-        );
+        Activity context = ActivityStack.getCurrentActicity();
+        context.startActivity(new Intent(context, clazz));
     }
 
     /**
      * 跳转目标activity，带参数
      */
     public static void jump(Class<? extends Activity> clazz, String key, Serializable value) {
-        ActivityStack.getCurrentActicity().startActivity(
-                new Intent(ActivityStack.getCurrentActicity(), clazz)
-                        .putExtra(key, value)
-        );
+        Activity context = ActivityStack.getCurrentActicity();
+        context.startActivity(new Intent(context, clazz).putExtra(key, value));
     }
 
     /**
@@ -173,25 +170,25 @@ public class AppManager {
         private static final LinkedList<Activity> STACK = new LinkedList<>();
 
         // 入栈
-        public static void add(Activity aty) {
+        private static void add(Activity aty) {
             synchronized (ActivityStack.class) {
                 STACK.addLast(aty);
             }
         }
 
         // 出栈
-        public static void remove(Activity aty) {
+        private static void remove(Activity aty) {
             synchronized (ActivityStack.class) {
                 if (STACK.contains(aty))
                     STACK.remove(aty);
             }
         }
 
-        public static Activity getCurrentActicity() {
+        private static Activity getCurrentActicity() {
             return STACK.getLast();
         }
 
-        public static boolean isExists(Class<? extends Activity> clazz) {
+        private static boolean isExists(Class<? extends Activity> clazz) {
             for (Activity aty : STACK) {
                 if (aty.getClass().getSimpleName().equals(clazz.getSimpleName()))
                     return true;
@@ -199,7 +196,7 @@ public class AppManager {
             return false;
         }
 
-        public static void exitApp() {
+        private static void exitApp() {
             synchronized (ActivityStack.class) {
                 List<Activity> copy = new LinkedList<>(STACK);
                 for (Activity aty : copy) {
@@ -211,7 +208,7 @@ public class AppManager {
             }
         }
 
-        public static void finishExcept(Class<? extends Activity> clazz) {
+        private static void finishExcept(Class<? extends Activity> clazz) {
             synchronized (ActivityStack.class) {
                 List<Activity> copy = new LinkedList<>(STACK);
                 for (Activity aty : copy) {

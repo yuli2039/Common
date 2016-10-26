@@ -1,6 +1,6 @@
 package com.yu.retrofittest.rx;
 
-import com.yu.retrofittest.entity.BaseEntity;
+import com.yu.retrofittest.http.HttpResult;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -12,38 +12,19 @@ import rx.schedulers.Schedulers;
  *
  * @author yu
  */
-public class DefaultTransformer<T> implements Observable.Transformer<T, T> {
+public class DefaultTransformer<T> implements Observable.Transformer<HttpResult<T>, T> {
+
     @Override
-    public Observable<T> call(Observable<T> tObservable) {
+    public Observable<T> call(Observable<HttpResult<T>> tObservable) {
         return tObservable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-//                .map(new Func1<T, T>() {// 通用错误处理，判断code,也可以用自定义converter来预处理异常
-//                    @Override
-//                    public T call(T t) {
-//                        if (t instanceof BaseEntity) {
-//                            BaseEntity e = (BaseEntity) t;
-//                            int code = e.getCode();
-//                            if (code != 200) throw new ApiException(code, e.getMessage());
-//                        }
-//                        return t;
-//                    }
-//                })
-                .flatMap(new Func1<T, Observable<T>>() {
+                .flatMap(new Func1<HttpResult<T>, Observable<T>>() {
                     @Override
-                    public Observable<T> call(T t) {
-                        if (t instanceof BaseEntity) {
-                            BaseEntity e = (BaseEntity) t;
-                            int code = e.getCode();
-                            if (code != 200)
-                                return Observable.error(new ApiException(code, e.getMessage()));
-                        }
-                        return Observable.just(t);
+                    public Observable<T> call(HttpResult<T> result) {
+                        if (result.isError()) return Observable.error(new ApiException(-200, "request fail..."));
+                        return Observable.just(result.getResults());
                     }
                 });
-    }
-
-    public static <T> DefaultTransformer<T> create() {
-        return new DefaultTransformer<>();
     }
 }

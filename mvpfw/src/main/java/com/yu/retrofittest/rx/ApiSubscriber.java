@@ -4,7 +4,7 @@ import android.net.ParseException;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonParseException;
-import com.yu.retrofittest.view.BaseView;
+import com.yu.retrofittest.base.BaseView;
 
 import org.json.JSONException;
 

@@ -14,14 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author yu
  *         Create on 16/5/19.
  */
-public class HttpMethods {
+public class RetrofitManager {
 
     private static final String BASE_URL = "http://stage.ypd.host:8888/gateway/";
     private static final long DEFAULT_TIMEOUT = 10_000L;
 
     private Retrofit retrofit;
 
-    private HttpMethods() {
+    private RetrofitManager() {
 //        InputStream in = null;// TODO 拿到证书的输入流
 //        HttpsManager.SSLParams sslp = HttpsManager.getSslSocketFactory(new InputStream[]{in}, null, null);
 
@@ -44,10 +44,10 @@ public class HttpMethods {
     }
 
     private static class SingletonHolder {
-        private static final HttpMethods INSTANCE = new HttpMethods();
+        private static final RetrofitManager INSTANCE = new RetrofitManager();
     }
 
-    public static HttpMethods getInstance() {
+    public static RetrofitManager getInstance() {
         return SingletonHolder.INSTANCE;
     }
 

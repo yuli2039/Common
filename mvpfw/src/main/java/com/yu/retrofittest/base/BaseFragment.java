@@ -1,4 +1,4 @@
-package com.yu.retrofittest.view;
+package com.yu.retrofittest.base;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
-
-import com.yu.retrofittest.presenter.BasePresenter;
 
 
 /**
@@ -37,18 +35,15 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mPresenter != null)
+        if (null != mPresenter)
             mPresenter.detachView();
     }
 
-    /**
-     * 在此请求网络数据
-     */
     public abstract void initData();
 
     @Override
     public void toast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -60,7 +55,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
 
     @Override
     public void dismissLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing())
-            loadingDialog.dismiss();
+        if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
     }
 }

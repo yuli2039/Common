@@ -1,4 +1,4 @@
-package com.yu.retrofittest.view;
+package com.yu.retrofittest.base;
 
 /**
  * @author yu

@@ -1,7 +1,5 @@
-package com.yu.retrofittest.presenter;
+package com.yu.retrofittest.base;
 
-
-import com.yu.retrofittest.view.BaseView;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -12,23 +10,19 @@ import rx.subscriptions.CompositeSubscription;
 public class BasePresenter<V> {
     private CompositeSubscription mCompositeSubscription;
     protected V mView;
-    protected BaseView mBaseView;
 
     public BasePresenter(V view) {
         attachView(view);
     }
 
     public void attachView(V view) {
-        if (!(view instanceof BaseView)) {
+        if (!(view instanceof BaseView))
             throw new IllegalStateException("the View must instance of BaseView");
-        }
         this.mView = view;
-        this.mBaseView = (BaseView) view;
     }
 
     public void detachView() {
         this.mView = null;
-        this.mBaseView = null;
         onUnsubscribe();
     }
 
