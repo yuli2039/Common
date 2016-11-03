@@ -9,17 +9,21 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
+import static android.content.Context.TELEPHONY_SERVICE;
+
 
 /**
  * 通用工具，各种util
@@ -27,7 +31,7 @@ import static android.content.ContentValues.TAG;
 public final class AppUtils {
 
     /**
-     * 第一次和第二次的退出间隔时间基准
+     * 第一次和第二次的退出间隔时间
      */
     private static final long EXIT_TWICE_INTERVAL = 2000;
     private static long mExitTime = 0;
@@ -53,9 +57,6 @@ public final class AppUtils {
         return sdf.format(date);
     }
 
-    /**
-     * 重启应用
-     */
     public static void restartApplication() {
         Activity context = AppManager.getCurrentActicity();
         Intent intent = context.getPackageManager()
@@ -65,12 +66,6 @@ public final class AppUtils {
     }
 
 
-    /**
-     * 调用相机前判断，否则会crash
-     *
-     * @param context
-     * @return
-     */
     public static boolean hasCamera(Context context) {
         PackageManager packageManager = context.getPackageManager();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -92,9 +87,34 @@ public final class AppUtils {
     }
 
     /**
-     * 获取设备唯一id
+     * 获取Android设备的唯一id，通过AndroidId，mac地址，IMEI和rom及硬件信息计算一个MD5值
      */
-    public static String getUUID(Context context) {
+    public static String getUniqueId(Context context) {
+        String before = getAndroidId(context) + getMacAddress(context) + getIMEI(context) + getUUID();
+        String after = "";
+
+        try {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(before.getBytes(), 0, before.length());
+            byte buffer[] = m.digest();
+
+            for (byte data : buffer) {
+                int b = (0xFF & data);
+                if (b <= 0xF)
+                    after += "0";
+                after += Integer.toHexString(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return after.toUpperCase();
+    }
+
+
+    /**
+     * 获取Android id
+     */
+    private static String getAndroidId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
@@ -102,12 +122,40 @@ public final class AppUtils {
      * 获取 MAC 地址
      * 须配置android.permission.ACCESS_WIFI_STATE权限
      */
-    public static String getMacAddress(Context context) {
+    private static String getMacAddress(Context context) {
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifi.getConnectionInfo();
-        String mac = info.getMacAddress();
-        LogUtils.i(TAG, " MAC：" + mac);
-        return mac;
+        return info.getMacAddress();
+    }
+
+    /**
+     * 获取IMEI
+     * 无通话功能或者水货将无效
+     */
+    private static String getIMEI(Context context) {
+        TelephonyManager TelephonyMgr = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
+        return TelephonyMgr.getDeviceId();
+    }
+
+    /**
+     * 通过ROM版本、制造商、CPU型号、以及其他硬件信息来计算一个id
+     * 当硬件和rom等完全一样时，可能重复（几率小）
+     */
+    private static String getUUID() {
+        return "35" +
+                Build.BOARD.length() % 10 +
+                Build.BRAND.length() % 10 +
+                Build.CPU_ABI.length() % 10 +
+                Build.DEVICE.length() % 10 +
+                Build.DISPLAY.length() % 10 +
+                Build.HOST.length() % 10 +
+                Build.ID.length() % 10 +
+                Build.MANUFACTURER.length() % 10 +
+                Build.MODEL.length() % 10 +
+                Build.PRODUCT.length() % 10 +
+                Build.TAGS.length() % 10 +
+                Build.TYPE.length() % 10 +
+                Build.USER.length() % 10;
     }
 
     public static AssetManager getAssets() {
