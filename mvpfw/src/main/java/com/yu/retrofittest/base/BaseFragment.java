@@ -54,7 +54,12 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
     }
 
     @Override
-    public void dismissLoading() {
+    public void hideLoading() {
         if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onError() {
+        
     }
 }

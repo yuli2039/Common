@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -21,7 +22,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         mPresenter = createPresenter();
 //        ButterKnife.bind(this);
         afterInitview();
-
     }
 
     protected abstract int getLayoutId();
@@ -38,7 +38,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     public void toast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        if (!TextUtils.isEmpty(msg))
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -49,8 +50,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public void dismissLoading() {
+    public void hideLoading() {
         if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
     }
 
+    @Override
+    public void onError() {
+
+    }
 }

@@ -19,8 +19,7 @@ import okio.Buffer;
  * Created by zhy on 16/3/1.
  */
 public class LoggerInterceptor implements Interceptor {
-
-    public static final String TAG = "http_";
+    private static final String TAG = "http_";
     private String tag;
     private boolean showResponse;
 
@@ -46,26 +45,24 @@ public class LoggerInterceptor implements Interceptor {
 
     private Response logForResponse(Response response) {
         try {
-            //===>response log
-            Log.e(tag, "========response'log=======");
+            Log.e(tag, "<<<<< response start=======================");
             Response.Builder builder = response.newBuilder();
             Response clone = builder.build();
-            Log.e(tag, "code : " + clone.code());
-            if (!TextUtils.isEmpty(clone.message()))
-                Log.e(tag, "message : " + clone.message());
+
+            Log.e(tag, clone.code() + "  " + clone.message() + "  " + clone.request().url());
 
             if (showResponse) {
                 ResponseBody body = clone.body();
                 if (body != null) {
                     MediaType mediaType = body.contentType();
                     if (mediaType != null) {
-                        Log.e(tag, "responseBody's contentType : " + mediaType.toString());
+                        Log.e(tag, "contentType: " + mediaType.toString());
                         if (isText(mediaType)) {
                             String resp = body.string();
-                            Log.e(tag, "responseBody's content : " + resp);
+                            Log.e(tag, "content: " + resp);
 
                             body = ResponseBody.create(mediaType, resp);
-                            Log.e(tag, "========response'log=======end");
+                            Log.e(tag, "<<<<< response end=========================");
                             return response.newBuilder().body(body).build();
                         } else {
                             Log.e(tag, "responseBody's content : maybe [file part] , too large too print , ignored!");
@@ -74,7 +71,7 @@ public class LoggerInterceptor implements Interceptor {
                 }
             }
 
-            Log.e(tag, "========response'log=======end");
+            Log.e(tag, "<<<<< response end=========================");
         } catch (Exception e) {
 //            e.printStackTrace();
         }
@@ -87,9 +84,8 @@ public class LoggerInterceptor implements Interceptor {
             String url = request.url().toString();
             Headers headers = request.headers();
 
-            Log.e(tag, "________request'log________");
-            Log.e(tag, "method : " + request.method());
-            Log.e(tag, "url : " + url);
+            Log.e(tag, ">>>>> request start_________________");
+            Log.e(tag, request.method() + ' ' + url);
             if (headers != null && headers.size() > 0) {
                 Log.e(tag, "headers : " + headers.toString());
             }
@@ -97,15 +93,15 @@ public class LoggerInterceptor implements Interceptor {
             if (requestBody != null) {
                 MediaType mediaType = requestBody.contentType();
                 if (mediaType != null) {
-                    Log.e(tag, "requestBody's contentType : " + mediaType.toString());
+                    Log.e(tag, "contentType : " + mediaType.toString());
                     if (isText(mediaType)) {
-                        Log.e(tag, "requestBody's content : " + bodyToString(request));
+                        Log.e(tag, "content : " + bodyToString(request));
                     } else {
-                        Log.e(tag, "requestBody's content : maybe [file part] , too large too print , ignored!");
+                        Log.e(tag, "content : maybe [file part] , too large too print , ignored!");
                     }
                 }
             }
-            Log.e(tag, "________request'log________end");
+            Log.e(tag, ">>>>> end request_________________");
         } catch (Exception e) {
 //            e.printStackTrace();
         }

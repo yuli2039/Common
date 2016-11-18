@@ -9,5 +9,7 @@ public interface BaseView {
 
     void showLoading();
 
-    void dismissLoading();
+    void hideLoading();
+
+    void onError();
 }

@@ -23,56 +23,60 @@ import rx.Subscriber;
  */
 public abstract class ApiSubscriber<T> extends Subscriber<T> {
 
-    private BaseView loading;
+    private BaseView mView;
     private boolean showLoading;
+    private boolean showToast;
 
-    public ApiSubscriber(@NonNull BaseView loading) {
-        this(loading, true);
+    public ApiSubscriber(@NonNull BaseView mBaseView) {
+        this(mBaseView, true, true);
     }
 
-    /**
-     * @param loading     baseview
-     * @param showLoading 是否显示loading
-     */
-    public ApiSubscriber(@NonNull BaseView loading, boolean showLoading) {
-        this.loading = loading;
+    public ApiSubscriber(@NonNull BaseView view, boolean showLoading, boolean showToast) {
+        this.mView = view;
         this.showLoading = showLoading;
+        this.showToast = showToast;
     }
 
     @Override
     public void onStart() {
-        if (showLoading) loading.showLoading();
+        if (showLoading) mView.showLoading();
     }
 
     @Override
     public void onCompleted() {
-        if (showLoading) loading.dismissLoading();
+        if (showLoading) mView.hideLoading();
     }
 
     /**
      * 只要链式调用中抛出了异常都会走这个回调
      */
     public void onError(Throwable e) {
-        if (showLoading) loading.dismissLoading();
+        if (showLoading)
+            mView.hideLoading();
 
         if (e instanceof ApiException) {
-            loading.toast(e.getMessage());
-            if (((ApiException) e).code == 100) {// token 失效
-                // TODO: 2016/9/19 0019  
-            }
-        } else if (e instanceof ConnectException
-                || e instanceof SocketTimeoutException) {
-            loading.toast("网络异常，请检查您的网络");
-        } else if (e instanceof HttpException) {
-            loading.toast("网络不畅，请稍后再试！");
+            toast(e.getMessage());
+
+            // TODO:处理特定异常，如token过期等
+        } else if (e instanceof ConnectException || e instanceof SocketTimeoutException) {// 超时
+            toast("网络不畅，请稍后再试！");
+        } else if (e instanceof HttpException) {// server 异常
+            toast("服务器异常，请稍后再试！");
         } else if (e instanceof JsonParseException
                 || e instanceof JSONException
                 || e instanceof ParseException) {
-            loading.toast("数据解析异常");
+            toast("数据解析异常");
         } else {
-            loading.toast("服务端异常");
+            //toast("未知异常");
         }
-        e.printStackTrace();
 
+        mView.onError();
+
+        e.printStackTrace();
     }
-}
+
+    private void toast(String s) {
+        if (showToast)
+            mView.toast(s);
+    }
+}}
