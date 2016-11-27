@@ -7,7 +7,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * BasePresenter,子类继承后，在实现对应具体页面的Presenter
  */
-public class BasePresenter<V> {
+public class BasePresenter<V extends BaseView> {
     private CompositeSubscription mCompositeSubscription;
     protected V mView;
 
@@ -16,8 +16,6 @@ public class BasePresenter<V> {
     }
 
     public void attachView(V view) {
-        if (!(view instanceof BaseView))
-            throw new IllegalStateException("the View must instance of BaseView");
         this.mView = view;
     }
 

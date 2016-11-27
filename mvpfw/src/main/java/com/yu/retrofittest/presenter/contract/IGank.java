@@ -1,4 +1,4 @@
-package com.yu.retrofittest.presenter;
+package com.yu.retrofittest.presenter.contract;
 
 import com.yu.retrofittest.entity.GankEntity;
 import com.yu.retrofittest.base.BaseView;
@@ -10,11 +10,11 @@ import java.util.List;
  *         Create on 16/10/26.
  */
 public interface IGank {
-    interface GankView extends BaseView {
+    interface View extends BaseView {
         void loadSuccess(List<GankEntity> data);
     }
 
-    interface GankPresenter {
+    interface Presenter {
         void loadData(String pageNum, String pageSize);
     }
 }

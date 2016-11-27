@@ -7,15 +7,15 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.yu.retrofittest.R;
 import com.yu.retrofittest.entity.GankEntity;
-import com.yu.retrofittest.presenter.GankPresenterImpl;
-import com.yu.retrofittest.presenter.IGank;
+import com.yu.retrofittest.presenter.GankPresenter;
+import com.yu.retrofittest.presenter.contract.IGank;
 import com.yu.retrofittest.base.BaseActivity;
 
 import java.util.List;
 
 import rx.functions.Action1;
 
-public class GankActivity extends BaseActivity<GankPresenterImpl> implements IGank.GankView {
+public class GankActivity extends BaseActivity<GankPresenter> implements IGank.View {
 
     private Button btnGank;
     private TextView tv;
@@ -26,8 +26,8 @@ public class GankActivity extends BaseActivity<GankPresenterImpl> implements IGa
     }
 
     @Override
-    protected GankPresenterImpl createPresenter() {
-        return new GankPresenterImpl(this);
+    protected GankPresenter createPresenter() {
+        return new GankPresenter(this);
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.yu.retrofittest.presenter;
 
 import com.yu.retrofittest.base.BasePresenter;
 import com.yu.retrofittest.entity.GankEntity;
-import com.yu.retrofittest.http.ApiService;
 import com.yu.retrofittest.http.RetrofitManager;
+import com.yu.retrofittest.presenter.contract.IGank;
 import com.yu.retrofittest.rx.ApiSubscriber;
 import com.yu.retrofittest.rx.DefaultTransformer;
 
@@ -16,18 +16,16 @@ import rx.functions.Func1;
  * @author yu
  *         Create on 16/10/26.
  */
-public class GankPresenterImpl extends BasePresenter<IGank.GankView> implements IGank.GankPresenter {
+public class GankPresenter extends BasePresenter<IGank.View> implements IGank.Presenter {
 
-    private ApiService service;
-
-    public GankPresenterImpl(IGank.GankView view) {
+    public GankPresenter(IGank.View view) {
         super(view);
-        service = RetrofitManager.getInstance().createService(ApiService.class);
     }
 
     @Override
     public void loadData(String pageNum, String pageSize) {
-        Subscription subscribe = service.gank(pageNum, pageSize)
+        Subscription subscribe = RetrofitManager.getInstance().getApiService()
+                .gank(pageNum, pageSize)
                 .compose(new DefaultTransformer<List<GankEntity>>())
                 .filter(new Func1<List<GankEntity>, Boolean>() {
                     @Override

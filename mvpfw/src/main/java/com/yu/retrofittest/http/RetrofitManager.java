@@ -27,7 +27,7 @@ public class RetrofitManager {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .addInterceptor(new LoggerInterceptor("_okhttp",true))
+                .addInterceptor(new LoggerInterceptor("_okhttp", true))
                 .addInterceptor(new HeaderInterceptor())
 //                .sslSocketFactory(sslp.sSLSocketFactory)
 //                .addInterceptor(new GzipRequsetInterceptor())
@@ -51,8 +51,16 @@ public class RetrofitManager {
         return SingletonHolder.INSTANCE;
     }
 
-    public <T> T createService(Class<T> clazz) {
-        return retrofit.create(clazz);
+//    public <T> T createService(Class<T> clazz) {
+//        return retrofit.create(clazz);
+//    }
+
+    private ApiService service;
+
+    public ApiService getApiService() {
+        if (service == null)
+            service = retrofit.create(ApiService.class);
+        return service;
     }
 
 }

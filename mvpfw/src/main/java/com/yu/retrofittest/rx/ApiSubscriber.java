@@ -67,7 +67,7 @@ public abstract class ApiSubscriber<T> extends Subscriber<T> {
                 || e instanceof ParseException) {
             toast("数据解析异常");
         } else {
-            //toast("未知异常");
+            toast("服务器繁忙，请稍后再试！");
         }
 
         mView.onError();
@@ -79,4 +79,4 @@ public abstract class ApiSubscriber<T> extends Subscriber<T> {
         if (showToast)
             mView.toast(s);
     }
-}}
+}
