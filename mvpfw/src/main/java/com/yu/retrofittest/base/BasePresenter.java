@@ -1,25 +1,47 @@
 package com.yu.retrofittest.base;
 
-
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
  * BasePresenter,子类继承后，在实现对应具体页面的Presenter
  */
-public class BasePresenter<V extends BaseView> {
+public class BasePresenter<V extends IView> implements IPresenter {
+
     private CompositeSubscription mCompositeSubscription;
     protected V mView;
 
     public BasePresenter(V view) {
-        attachView(view);
-    }
-
-    public void attachView(V view) {
         this.mView = view;
     }
 
-    public void detachView() {
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
+    @Override
+    public void onStop() {
+
+    }
+
+    @Override
+    public void onDestory() {
         this.mView = null;
         onUnsubscribe();
     }
@@ -37,9 +59,15 @@ public class BasePresenter<V extends BaseView> {
     /**
      * 取消本页面所有订阅
      */
-    protected void onUnsubscribe() {
+    private void onUnsubscribe() {
         if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
+        }
+    }
+
+    protected void removeSubscription(Subscription subscribe) {
+        if (mCompositeSubscription != null) {
+            mCompositeSubscription.remove(subscribe);
         }
     }
 }

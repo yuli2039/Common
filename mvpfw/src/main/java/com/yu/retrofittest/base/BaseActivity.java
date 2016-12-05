@@ -8,8 +8,7 @@ import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Toast;
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity
-        implements BaseView {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
 
     protected P mPresenter;
     private AlertDialog loadingDialog;
@@ -20,6 +19,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         mPresenter = createPresenter();
+        if (null != mPresenter)
+            mPresenter.onCreate();
 //        ButterKnife.bind(this);
         afterInitview();
     }
@@ -31,9 +32,38 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected abstract void afterInitview();
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (null != mPresenter)
+            mPresenter.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (null != mPresenter)
+            mPresenter.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (null != mPresenter)
+            mPresenter.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (null != mPresenter)
+            mPresenter.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != mPresenter) mPresenter.detachView();
+        if (null != mPresenter)
+            mPresenter.onDestory();
     }
 
     @Override

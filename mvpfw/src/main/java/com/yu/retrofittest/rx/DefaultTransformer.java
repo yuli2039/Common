@@ -19,7 +19,7 @@ public class DefaultTransformer<T> implements Observable.Transformer<HttpResult<
     @Override
     public Observable<T> call(Observable<HttpResult<T>> tObservable) {
         return tObservable
-                .onBackpressureBuffer(8)// 背压异常缓存
+                .onBackpressureBuffer(16)// 背压异常缓存
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .doOnSubscribe(new Action0() {

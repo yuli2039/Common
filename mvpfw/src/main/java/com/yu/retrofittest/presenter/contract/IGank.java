@@ -1,7 +1,7 @@
 package com.yu.retrofittest.presenter.contract;
 
 import com.yu.retrofittest.entity.GankEntity;
-import com.yu.retrofittest.base.BaseView;
+import com.yu.retrofittest.base.IView;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  *         Create on 16/10/26.
  */
 public interface IGank {
-    interface View extends BaseView {
+    interface View extends IView {
         void loadSuccess(List<GankEntity> data);
     }
 

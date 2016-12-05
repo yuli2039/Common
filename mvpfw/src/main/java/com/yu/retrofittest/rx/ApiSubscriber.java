@@ -4,7 +4,7 @@ import android.net.ParseException;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonParseException;
-import com.yu.retrofittest.base.BaseView;
+import com.yu.retrofittest.base.IView;
 
 import org.json.JSONException;
 
@@ -23,15 +23,15 @@ import rx.Subscriber;
  */
 public abstract class ApiSubscriber<T> extends Subscriber<T> {
 
-    private BaseView mView;
+    private IView mView;
     private boolean showLoading;
     private boolean showToast;
 
-    public ApiSubscriber(@NonNull BaseView mBaseView) {
+    public ApiSubscriber(@NonNull IView mBaseView) {
         this(mBaseView, true, true);
     }
 
-    public ApiSubscriber(@NonNull BaseView view, boolean showLoading, boolean showToast) {
+    public ApiSubscriber(@NonNull IView view, boolean showLoading, boolean showToast) {
         this.mView = view;
         this.showLoading = showLoading;
         this.showToast = showToast;
