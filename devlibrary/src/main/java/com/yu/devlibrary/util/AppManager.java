@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -20,34 +21,12 @@ import java.util.List;
 public class AppManager {
 
     private static Context sContext;
+    private static int activeCount = 0;// 当前活动的activity数
+    private static boolean isForground = false;// 应用是否在前台
 
-    private static final int STATUS_FORCE_KILLED = -1;
-    private static final int STATUS_NORMAL = 0;
-
-    /**
-     * 当前应用的状态，默认为被回收状态；
-     * ps：当最小化应用后，如果被强杀或者回收了，此值会重置为默认；
-     * 我们在应用的第一个界面（WelcomeActivity）修改此值为normal状态，在BaseActivity中每次初始化前判断此值，
-     * 如果处于回收状态，则可以进行重启等操作，否则才进行初始化，以此规避回收后恢复界面时某些对象为空引起crash问题；
-     */
-    private int appStatus = STATUS_FORCE_KILLED;
-    private int activeCount = 0;// 当前活动的activity数
-    private boolean isForground = false;// 应用是否在前台
-
-
-    private AppManager() {
-    }
-
-    public static AppManager getInstance() {
-        return IntstanceHolder.sIntance;
-    }
-
-    private static class IntstanceHolder {
-        private static final AppManager sIntance = new AppManager();
-    }
-
-    public void init(Application application) {
+    public static void init(Application application) {
         sContext = application.getApplicationContext();
+        activeCount = 0;
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -97,68 +76,52 @@ public class AppManager {
     }
 
     /**
-     * 设置应用为正常状态
-     */
-    public void setStatusNormal() {
-        this.appStatus = STATUS_NORMAL;
-    }
-
-    /**
      * @return 当前应用是否在前台
      */
-    public boolean isForground() {
+    public static boolean isForground() {
         return isForground;
     }
 
-    /**
-     * @return 当前应用是否被回收
-     */
-    public boolean isForceKilled() {
-        return appStatus == STATUS_FORCE_KILLED;
-    }
 
-
-
-    /**
-     * 跳转目标activity
-     */
     public static void jump(Class<? extends Activity> clazz) {
-        Activity context = ActivityStack.getCurrentActivity();
-        context.startActivity(new Intent(context, clazz));
+        try {
+            Activity context = ActivityStack.getCurrentActivity();
+            context.startActivity(new Intent(context, clazz));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * 跳转目标activity，带参数
-     */
+    public static void jump(Class<? extends Activity> clazz, String key, Parcelable value) {
+        try {
+            Activity context = ActivityStack.getCurrentActivity();
+            context.startActivity(new Intent(context, clazz).putExtra(key, value));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void jump(Class<? extends Activity> clazz, String key, Serializable value) {
-        Activity context = ActivityStack.getCurrentActivity();
-        context.startActivity(new Intent(context, clazz).putExtra(key, value));
+        try {
+            Activity context = ActivityStack.getCurrentActivity();
+            context.startActivity(new Intent(context, clazz).putExtra(key, value));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * 获取当前栈顶的activity
-     */
     public static Activity getCurrentActicity() {
         return ActivityStack.getCurrentActivity();
     }
 
-    /**
-     * 当前栈中是否存在目标activity
-     */
     public static boolean isExists(Class<? extends Activity> clazz) {
         return ActivityStack.isExists(clazz);
     }
 
-    /**
-     * 关闭除了参数的activity之外所有
-     */
     public static void finishExcept(Class<? extends Activity> clazz) {
         ActivityStack.finishExcept(clazz);
     }
 
-    /**
-     * 退出应用
-     */
     public static void exitApp() {
         ActivityStack.exitApp();
     }
